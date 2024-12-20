@@ -1,61 +1,152 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>직원 전용 카페 선주문</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2001아울렛 분당점 직원 전용 더카페 선주문 페이지</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f9;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    img {
+      display: block;
+      margin: 0 auto 20px;
+      max-width: 100%;
+      height: auto;
+    }
+    .form-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .menu-item {
+      margin: 10px 0;
+    }
+  </style>
+  <script>
+    // 비밀번호 확인 후 관리자 페이지로 이동하는 함수
+    function checkPassword() {
+      const password = prompt("관리자 비밀번호를 입력하세요:");
+      const correctPassword = "yourPassword"; // 원하는 비밀번호로 설정
+
+      if (password === correctPassword) {
+        window.location.href = "admin.html";
+      } else {
+        alert("비밀번호가 틀렸습니다. 다시 시도해주세요.");
+      }
+    }
+
+    // 주문 내역을 확인하는 함수
+    function confirmOrder() {
+      const orderList = document.querySelectorAll('.menu-item input:checked');
+      let orderSummary = '';
+      orderList.forEach(item => {
+        orderSummary += `${item.value} - ${item.dataset.count}잔\n`;
+      });
+      const pickupTime = document.getElementById('pickup-time').value;
+      const confirmation = confirm(`주문 내역을 확인해주세요:\n\n${orderSummary}\n픽업 시간: ${pickupTime}\n\n이대로 주문하시겠습니까?`);
+      if (confirmation) {
+        alert("주문이 완료되었습니다!");
+      } else {
+        alert("주문이 취소되었습니다.");
+      }
+    }
+
+    // 메뉴 항목 추가 기능
+    function addMenuItem() {
+      const menuContainer = document.getElementById('menu-container');
+      const newMenuItem = document.createElement('div');
+      newMenuItem.classList.add('menu-item');
+      newMenuItem.innerHTML = `
+        <label>메뉴 / 개수 / 옵션</label>
+        <input type="checkbox" name="menu-item" value="메뉴 예시" data-count="1"> 메뉴 예시
+        <input type="number" name="quantity" value="1" min="1" style="width: 80px;">
+        <select>
+          <option value="옵션1">옵션1</option>
+          <option value="옵션2">옵션2</option>
+          <option value="옵션3">옵션3</option>
+        </select>
+      `;
+      menuContainer.appendChild(newMenuItem);
+    }
+  </script>
 </head>
 <body>
-    <h1>직원 전용 카페 선주문</h1>
-    
-    <form id="order-form">
-        <label for="name">주문자 이름:</label>
-        <input type="text" id="name" name="name" required><br><br>
+  <h1>2001아울렛 분당점 직원 전용 더카페 선주문 페이지</h1>
 
-        <label for="menu">메뉴:</label>
-        <input type="text" id="menu" name="menu" required><br><br>
+  <!-- 메뉴판 이미지 -->
+  <img src="menu.jpg" alt="메뉴판">
 
-        <label for="quantity">수량:</label>
-        <input type="number" id="quantity" name="quantity" required><br><br>
+  <!-- 주문 폼 -->
+  <div class="form-container">
+    <!-- 주문자 정보 -->
+    <label for="name">주문자 성함</label>
+    <input type="text" id="name" placeholder="성함을 입력하세요">
 
-        <label for="pickup-time">픽업 시간:</label>
-        <input type="time" id="pickup-time" name="pickup-time" required><br><br>
+    <label for="department">소속</label>
+    <input type="text" id="department" placeholder="소속을 입력하세요">
 
-        <button type="submit">주문하기</button>
-    </form>
+    <!-- 메뉴 선택 및 개수 -->
+    <div id="menu-container">
+      <div class="menu-item">
+        <label>메뉴 / 개수 / 옵션</label>
+        <input type="checkbox" name="menu-item" value="메뉴 예시" data-count="1"> 메뉴 예시
+        <input type="number" name="quantity" value="1" min="1" style="width: 80px;">
+        <select>
+          <option value="옵션1">옵션1</option>
+          <option value="옵션2">옵션2</option>
+          <option value="옵션3">옵션3</option>
+        </select>
+      </div>
+    </div>
 
-    <script>
-        document.getElementById('order-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
+    <!-- 메뉴 추가 버튼 -->
+    <button type="button" onclick="addMenuItem()">메뉴 추가</button>
 
-            const name = document.getElementById('name').value;
-            const menu = document.getElementById('menu').value;
-            const quantity = document.getElementById('quantity').value;
-            const pickupTime = document.getElementById('pickup-time').value;
+    <!-- 픽업 시간 -->
+    <label for="pickup-time">픽업 시간</label>
+    <input type="time" id="pickup-time" required>
 
-            const confirmation = confirm(`${name}님, ${menu} 메뉴 ${quantity}잔, ${pickupTime}에 픽업하시겠습니까?`);
+    <!-- 주문하기 버튼 -->
+    <button type="button" onclick="confirmOrder()">주문하기</button>
 
-            if (confirmation) {
-                const response = await fetch('/api/orders', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name,
-                        menu,
-                        quantity,
-                        pickupTime,
-                    }),
-                });
-
-                if (response.ok) {
-                    alert('주문이 완료되었습니다!');
-                } else {
-                    alert('주문에 실패했습니다.');
-                }
-            }
-        });
-    </script>
+    <!-- 관리자 페이지로 이동하는 버튼 -->
+    <button type="button" onclick="checkPassword()">관리자 페이지로 이동</button>
+  </div>
 </body>
 </html>
