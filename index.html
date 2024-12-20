@@ -114,16 +114,17 @@
   });
 
   // menu, hotIce, count가 모두 존재하는지 체크
-  if (menu && hotIce && count && menu.value && hotIce.value && count.value) {
+  if (menu && hotIce && count) {
+    const menuValue = menu.value.trim() !== '' ? menu.value : '기타';
     orders.push({
-      menu: menu.value,
+      menu: menuValue,
       hotIce: hotIce.value,
       options: checkedOptions.join(', '),
       count: count.value,
       customerName: customerName,  
       customerAffiliation: customerAffiliation  
     });
-    orderSummary += `${menu.value} (${hotIce.value}) - 옵션: ${checkedOptions.join(', ')} - ${count.value}잔 - 이름: ${customerName} - 소속: ${customerAffiliation}\n`;
+    orderSummary += `${menuValue} (${hotIce.value}) - 옵션: ${checkedOptions.join(', ')} - ${count.value}잔 - 이름: ${customerName} - 소속: ${customerAffiliation}\n`;
   }
 });
 
