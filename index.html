@@ -126,7 +126,7 @@
     }
   });
 
-  const pickupTime = document.getElementById('pickup-time').value;
+  const pickupTime = document.getElementById('pickup-datetime').value;
 
   if (!orderSummary) {
     alert("주문할 항목이 없습니다. 메뉴를 선택해주세요.");
@@ -287,8 +287,8 @@
     <label for="CustomerI">소속</label>
     <input type="text" id="CustomerI" placeholder="소속을 입력하세요">
 
-    <label for="pickup-time">픽업 시간</label>
-    <input type="time" id="pickup-time">
+    <label for="pickup-datetime">픽업 시간</label>
+<input type="datetime-local" id="pickup-datetime" name="pickup-datetime">
 
     <div id="menu-container">
       <div class="menu-item">
