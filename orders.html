@@ -1,6 +1,5 @@
-<!-- orders.html (관리자 페이지) -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,28 +7,26 @@
 </head>
 <body>
     <h1>주문 내역</h1>
-    <table id="ordersTable">
+    <table id="orders-table">
         <thead>
             <tr>
                 <th>주문자</th>
                 <th>메뉴</th>
-                <th>갯수</th>
+                <th>수량</th>
                 <th>픽업 시간</th>
             </tr>
         </thead>
         <tbody>
-            <!-- 주문 내역이 여기에 표시됩니다. -->
+            <!-- 주문 내역이 여기에 표시됩니다 -->
         </tbody>
     </table>
 
     <script>
-        // 서버에서 주문 내역을 불러옵니다.
         async function fetchOrders() {
-            const response = await fetch('https://your-heroku-app.herokuapp.com/orders');
+            const response = await fetch('/api/orders');
             const orders = await response.json();
-
-            const tableBody = document.querySelector('#ordersTable tbody');
-            tableBody.innerHTML = ''; // 기존 내용을 지운 후
+            const tableBody = document.querySelector('#orders-table tbody');
+            tableBody.innerHTML = ''; // 기존 데이터를 지우고 새로 삽입
 
             orders.forEach(order => {
                 const row = document.createElement('tr');
@@ -44,8 +41,7 @@
         }
 
         // 페이지가 로드될 때 주문 내역을 불러옵니다.
-        fetchOrders();
+        window.onload = fetchOrders;
     </script>
 </body>
 </html>
-

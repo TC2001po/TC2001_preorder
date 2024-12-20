@@ -4,49 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관리자 페이지</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-    </style>
 </head>
 <body>
-    <h1>관리자 페이지</h1>
-
-    <!-- 비밀번호 입력 폼 -->
-    <div id="passwordSection">
-        <label for="password">비밀번호:</label>
-        <input type="password" id="password" required>
-        <button onclick="checkPassword()">확인</button>
-    </div>
-
-    <!-- 주문 내역을 표시하는 부분 -->
-    <div id="orderDetails" style="display:none;">
-        <h2>주문 내역</h2>
-        <button onclick="window.location.href='orders.html'">주문 내역 보기</button>
-    </div>
+    <h1>주문 내역</h1>
+    <table id="orders-table">
+        <thead>
+            <tr>
+                <th>주문자</th>
+                <th>메뉴</th>
+                <th>수량</th>
+                <th>픽업 시간</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 주문 내역이 여기에 표시됩니다 -->
+        </tbody>
+    </table>
 
     <script>
-        const correctPassword = 'admin123';  // 관리자 비밀번호 (기본값)
+        async function fetchOrders() {
+            const response = await fetch('/api/orders');
+            const orders = await response.json();
+            const tableBody = document.querySelector('#orders-table tbody');
+            tableBody.innerHTML = ''; // 기존 데이터를 지우고 새로 삽입
 
-        function checkPassword() {
-            const password = document.getElementById('password').value;
-            if (password === correctPassword) {
-                // 비밀번호가 맞으면 주문 내역 보기 버튼을 활성화
-                document.getElementById('passwordSection').style.display = 'none';
-                document.getElementById('orderDetails').style.display = 'block';
-            } else {
-                alert('비밀번호가 틀렸습니다.');
-            }
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.name}</td>
+                    <td>${order.menu}</td>
+                    <td>${order.quantity}</td>
+                    <td>${order.pickupTime}</td>
+                `;
+                tableBody.appendChild(row);
+            });
         }
+
+        // 페이지가 로드될 때 주문 내역을 불러옵니다.
+        window.onload = fetchOrders;
     </script>
 </body>
 </html>

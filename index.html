@@ -6,67 +6,54 @@
     <title>직원 전용 카페 선주문</title>
 </head>
 <body>
-    <h1>직원 전용 카페 선주문 페이지</h1>
-
-    <!-- 주문 폼 -->
-    <form id="orderForm">
-        <label for="name">주문자 이름:</label><br>
+    <h1>직원 전용 카페 선주문</h1>
+    
+    <form id="order-form">
+        <label for="name">주문자 이름:</label>
         <input type="text" id="name" name="name" required><br><br>
 
-        <label for="menu">메뉴와 갯수 (예: 아메리카노 2, 라떼 1):</label><br>
-        <input type="text" id="menu" name="menu" required placeholder="메뉴와 갯수를 입력하세요"><br><br>
+        <label for="menu">메뉴:</label>
+        <input type="text" id="menu" name="menu" required><br><br>
 
-        <label for="pickupTime">픽업 시간:</label><br>
-        <input type="time" id="pickupTime" name="pickupTime" required><br><br>
+        <label for="quantity">수량:</label>
+        <input type="number" id="quantity" name="quantity" required><br><br>
+
+        <label for="pickup-time">픽업 시간:</label>
+        <input type="time" id="pickup-time" name="pickup-time" required><br><br>
 
         <button type="submit">주문하기</button>
     </form>
 
-    <!-- 관리자 페이지로 이동하는 버튼 -->
-    <br>
-    <button id="adminButton" onclick="window.location.href='admin.html'">관리자 페이지로 이동</button>
-
     <script>
-        // 폼 제출 처리
-        document.getElementById('orderForm').addEventListener('submit', function (e) {
-            e.preventDefault(); // 페이지 리로드 방지
+        document.getElementById('order-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-            // 폼 값 가져오기
             const name = document.getElementById('name').value;
             const menu = document.getElementById('menu').value;
-            const pickupTime = document.getElementById('pickupTime').value;
+            const quantity = document.getElementById('quantity').value;
+            const pickupTime = document.getElementById('pickup-time').value;
 
-            // 주문 내역을 확인할 메시지 생성
-            const confirmationMessage = `${name}님, ${menu} 주문이 맞으신가요?\n픽업 시간: ${pickupTime}`;
-            
-            // 사용자가 확인할 수 있는 메시지 창
-            const isConfirmed = confirm(confirmationMessage);
+            const confirmation = confirm(`${name}님, ${menu} 메뉴 ${quantity}잔, ${pickupTime}에 픽업하시겠습니까?`);
 
-            if (isConfirmed) {
-                // 서버로 주문 내역 전송
-                const order = {
-                    name: name,
-                    menu: menu,
-                    pickupTime: pickupTime
-                };
-
-                fetch('http://localhost:3000/order', {
+            if (confirmation) {
+                const response = await fetch('/api/orders', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(order)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert('주문 정보가 서버에 저장되었습니다!');
-                })
-                .catch(error => {
-                    alert('주문 저장에 실패했습니다.');
-                    console.error(error);
+                    body: JSON.stringify({
+                        name,
+                        menu,
+                        quantity,
+                        pickupTime,
+                    }),
                 });
-            } else {
-                alert('주문이 취소되었습니다. 다시 입력해주세요.');
+
+                if (response.ok) {
+                    alert('주문이 완료되었습니다!');
+                } else {
+                    alert('주문에 실패했습니다.');
+                }
             }
         });
     </script>
