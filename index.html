@@ -103,7 +103,7 @@
   }
 
   orderList.forEach(item => {
-    const menu = item.querySelector('input[name="menu"]');  // <input>으로 수정된 메뉴 필드
+    const menu = document.querySelector('#menu').value;  // <input>으로 수정된 메뉴 필드
     const hotIce = item.querySelector('select[name="hotIce"]');
     const count = item.querySelector('input[name="count"]');
 
