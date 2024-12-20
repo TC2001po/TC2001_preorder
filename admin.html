@@ -3,85 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>주문 관리</title>
+  <title>주문 내역</title>
   <style>
-    .order-item {
-      margin-bottom: 20px;
+    table {
+      width: 100%;
+      border-collapse: collapse;
     }
-    .completed {
-      background-color: #d3ffd3; /* 완료된 주문은 초록색 배경 */
+    th, td {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .order-list {
+      margin-top: 20px;
+    }
+    .alert {
+      color: red;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h1>주문 목록</h1>
-  <button onclick="refreshOrders()">새로고침</button>
-  <div id="orders-list"></div>
+  <h1>주문 내역</h1>
+
+  <!-- 주문 내역을 표시할 테이블 -->
+  <table>
+    <thead>
+      <tr>
+        <th>주문자 이름</th>
+        <th>소속</th>
+        <th>주문 내역</th>
+        <th>픽업 시간</th>
+        <th>주문 시간</th>
+      </tr>
+    </thead>
+    <tbody id="order-list">
+      <!-- 주문 내역은 여기에서 동적으로 삽입됩니다. -->
+    </tbody>
+  </table>
+
+  <button id="refresh-button">새로고침</button>
 
   <script>
-    let previousOrdersCount = 0; // 이전 주문 개수 추적
+    // 새로고침 버튼 클릭 시 주문 내역을 다시 불러옵니다.
+    document.getElementById('refresh-button').addEventListener('click', loadOrders);
 
-    // 주문 목록 가져오기
-    function fetchOrders() {
+    // 주문 내역을 불러오는 함수
+    function loadOrders() {
       fetch('/api/orders')
         .then(response => response.json())
-        .then(orders => {
-          const ordersList = document.getElementById('orders-list');
-          ordersList.innerHTML = ''; // 기존 목록을 지우고 새로 고침
-
-          orders.forEach(order => {
-            const orderItem = document.createElement('div');
-            orderItem.classList.add('order-item');
-            orderItem.innerHTML = `
-              <div>메뉴: ${order.menu} (${order.hotIce})</div>
-              <div>옵션: ${order.options}</div>
-              <div>수량: ${order.count}잔</div>
-              <div>주문자: ${order.customerName}</div>
-              <div>소속: ${order.customerAffiliation}</div>
-              <div>픽업 시간: ${order.pickupTime}</div>
-              <button onclick="completeOrder('${order.id}')">완료</button>
-            `;
-            
-            if (order.completed) {
-              orderItem.classList.add('completed'); // 완료된 주문은 배경색 변경
-            }
-
-            ordersList.appendChild(orderItem);
-          });
-
-          // 새로운 주문이 들어오면 알림음 울리기
-          if (orders.length > previousOrdersCount) {
-            new Audio('notification.mp3').play(); // 알림음
-          }
-
-          previousOrdersCount = orders.length; // 주문 개수 업데이트
-        })
-        .catch(error => console.error('주문 목록을 가져오는 중 오류가 발생했습니다:', error));
-    }
-
-    // 주문 새로 고침
-    function refreshOrders() {
-      fetchOrders();
-    }
-
-    // 주문 완료 처리
-    function completeOrder(orderId) {
-      fetch(`/api/orders/${orderId}`, { method: 'DELETE' })
-        .then(response => response.json())
         .then(data => {
-          alert('주문이 완료되었습니다.');
-          refreshOrders(); // 새로고침
+          const orderList = document.getElementById('order-list');
+          orderList.innerHTML = '';  // 기존 내용을 지웁니다.
+
+          if (data.length === 0) {
+            const alertMessage = document.createElement('tr');
+            alertMessage.innerHTML = '<td colspan="5" class="alert">현재 주문 내역이 없습니다.</td>';
+            orderList.appendChild(alertMessage);
+          } else {
+            // 각 주문을 테이블에 표시
+            data.forEach(order => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                <td>${order.customerName}</td>
+                <td>${order.customerAffiliation}</td>
+                <td>${order.orders.map(item => `${item.menu} (${item.hotIce}) - 옵션: ${item.options} - ${item.count}잔`).join('<br>')}</td>
+                <td>${order.pickupTime}</td>
+                <td>${order.orderTime}</td>
+              `;
+              orderList.appendChild(row);
+            });
+          }
         })
         .catch(error => {
-          console.error('주문 완료 처리 중 오류가 발생했습니다:', error);
+          console.error('주문 정보를 불러오는 중 오류가 발생했습니다.', error);
         });
     }
 
-    // 초기 주문 목록 불러오기
-    fetchOrders();
-
-    // 주문 목록을 일정 시간마다 자동으로 새로 고침
-    setInterval(fetchOrders, 5000); // 5초마다 주문 목록 업데이트
+    // 페이지 로드 시 바로 주문 내역을 불러옵니다.
+    window.onload = loadOrders;
   </script>
 </body>
 </html>

@@ -1,39 +1,30 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000;
-let orders = []; // 주문 목록
+const port = 3000;
 
-// 주문 받기 (POST)
 app.use(express.json());
 
+let orders = [];  // 주문을 저장할 배열
+
+// POST /api/orders - 주문을 서버에 저장
 app.post('/api/orders', (req, res) => {
-  const { orders: newOrders, pickupTime } = req.body;
-  newOrders.forEach(order => {
-    order.id = Date.now() + Math.random(); // 고유한 ID 부여
-    order.pickupTime = pickupTime;
-    order.completed = false; // 초기에는 미완료 상태
-    orders.push(order);
-  });
-  res.json({ message: '주문이 저장되었습니다.' });
+  const { orders: orderDetails, pickupTime, customerName, customerAffiliation } = req.body;
+  const order = {
+    orders: orderDetails,
+    pickupTime,
+    customerName,
+    customerAffiliation,
+    orderTime: new Date().toLocaleString()  // 주문 시간이 포함된 정보
+  };
+  orders.push(order);  // 주문 정보 저장
+  res.json({ message: '주문이 완료되었습니다!', order });
 });
 
-// 주문 목록 가져오기 (GET)
+// GET /api/orders - 주문 내역을 가져오는 API
 app.get('/api/orders', (req, res) => {
   res.json(orders);
 });
 
-// 주문 완료 처리 (DELETE)
-app.delete('/api/orders/:id', (req, res) => {
-  const orderId = parseFloat(req.params.id);
-  const orderIndex = orders.findIndex(order => order.id === orderId);
-  if (orderIndex !== -1) {
-    orders[orderIndex].completed = true; // 완료된 주문으로 표시
-    res.json({ message: '주문이 완료되었습니다.' });
-  } else {
-    res.status(404).json({ message: '주문을 찾을 수 없습니다.' });
-  }
-});
-
 app.listen(port, () => {
-  console.log(`서버가 ${port}번 포트에서 실행 중입니다.`);
+  console.log(`Server is running on http://localhost:${port}`);
 });
