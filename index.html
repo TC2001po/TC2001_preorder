@@ -103,8 +103,8 @@
       checkedOptions.push(option.value);
     });
 
-    const customerName = item.querySelector('input[name="name"]').value;  // 각 item에서 name 값을 가져옴
-    const customerAffiliation = item.querySelector('input[name="work"]').value;  // 각 item에서 work 값을 가져옴
+    const customerName = item.querySelector('input[name="CustomerN"]').value;  // 각 item에서 name 값을 가져옴
+    const customerAffiliation = item.querySelector('input[name="CustomerI"]').value;  // 각 item에서 work 값을 가져옴
 
     if (menu && hotIce && count && customerName && customerAffiliation) {
       orders.push({
@@ -279,11 +279,11 @@
 </div>
 
   <div class="form-container">
-    <label for="name">이름</label>
-    <input type="text" id="name" placeholder="이름을 입력하세요">
+    <label for="CustomerN">이름</label>
+    <input type="text" id="CustomerN" placeholder="이름을 입력하세요">
 
-    <label for="work">소속</label>
-    <input type="text" id="work" placeholder="소속을 입력하세요">
+    <label for="CustomerI">소속</label>
+    <input type="text" id="CustomerI" placeholder="소속을 입력하세요">
 
     <label for="pickup-time">픽업 시간</label>
     <input type="time" id="pickup-time">
