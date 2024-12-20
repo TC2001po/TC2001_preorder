@@ -31,16 +31,7 @@
     <!-- 주문 내역을 표시하는 부분 -->
     <div id="orderDetails" style="display:none;">
         <h2>주문 내역</h2>
-        <table id="orderTable">
-            <thead>
-                <tr>
-                    <th>주문자</th>
-                    <th>메뉴</th>
-                    <th>픽업 시간</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <button onclick="window.location.href='orders.html'">주문 내역 보기</button>
     </div>
 
     <script>
@@ -49,29 +40,12 @@
         function checkPassword() {
             const password = document.getElementById('password').value;
             if (password === correctPassword) {
-                // 비밀번호가 맞으면 주문 내역 표시
+                // 비밀번호가 맞으면 주문 내역 보기 버튼을 활성화
                 document.getElementById('passwordSection').style.display = 'none';
                 document.getElementById('orderDetails').style.display = 'block';
-                loadOrders();
             } else {
                 alert('비밀번호가 틀렸습니다.');
             }
-        }
-
-        function loadOrders() {
-            // 로컬 저장소에서 주문 내역 가져오기
-            const orders = JSON.parse(localStorage.getItem('orders')) || [];
-            const orderTableBody = document.querySelector('#orderTable tbody');
-
-            orders.forEach(order => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${order.name}</td>
-                    <td>${order.menu}</td>
-                    <td>${order.pickupTime}</td>
-                `;
-                orderTableBody.appendChild(row);
-            });
         }
     </script>
 </body>

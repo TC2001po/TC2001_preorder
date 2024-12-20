@@ -36,19 +36,33 @@
             const menu = document.getElementById('menu').value;
             const pickupTime = document.getElementById('pickupTime').value;
 
-            // 주문 내역을 로컬 저장소에 저장
-            const order = {
-                name: name,
-                menu: menu,
-                pickupTime: pickupTime
-            };
+            // 주문 내역을 확인할 메시지 생성
+            const confirmationMessage = `${name}님, ${menu} 주문이 맞으신가요?\n픽업 시간: ${pickupTime}`;
+            
+            // 사용자가 확인할 수 있는 메시지 창
+            const isConfirmed = confirm(confirmationMessage);
 
-            // 로컬 저장소에 저장
-            let orders = JSON.parse(localStorage.getItem('orders')) || [];
-            orders.push(order);
-            localStorage.setItem('orders', JSON.stringify(orders));
+            if (isConfirmed) {
+                // 주문 내역을 로컬 저장소에 저장
+                const order = {
+                    name: name,
+                    menu: menu,
+                    pickupTime: pickupTime
+                };
 
-            alert('주문 정보가 저장되었습니다!');
+                // 로컬 저장소에서 기존 주문 정보 가져오기
+                let orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+                // 새로운 주문 추가
+                orders.push(order);
+
+                // 로컬 저장소에 새로운 주문 저장
+                localStorage.setItem('orders', JSON.stringify(orders));
+
+                alert('주문 정보가 저장되었습니다!');
+            } else {
+                alert('주문이 취소되었습니다. 다시 입력해주세요.');
+            }
         });
     </script>
 </body>

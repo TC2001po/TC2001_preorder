@@ -4,55 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문 내역</title>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> <!-- 구글 차트 로딩 -->
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
     <h1>주문 내역</h1>
-    <table id="orderList">
-        <!-- 주문 내역을 여기 표시 -->
+
+    <table>
+        <thead>
+            <tr>
+                <th>주문자</th>
+                <th>메뉴</th>
+                <th>픽업 시간</th>
+            </tr>
+        </thead>
+        <tbody id="orderTableBody">
+            <!-- 주문 내역이 여기에 추가됩니다 -->
+        </tbody>
     </table>
 
-    <script type="text/javascript">
-        // 구글 차트 로드
-        google.charts.load('current', {
-            packages: ['corechart', 'table']
-        });
+    <script>
+        // 로컬 저장소에서 주문 내역 가져오기
+        const orders = JSON.parse(localStorage.getItem('orders')) || [];
+        const orderTableBody = document.getElementById('orderTableBody');
 
-        // 스프레드시트 ID와 범위 설정
-        const spreadsheetId = 'y15SjKcG0Sa3LwEOwj4R-s9JXuSsLcf1XpMAtMrHOLbDI'; // 구글 스프레드시트 ID
-        const range = '더카페 2001아울렛 선주문 내역'; // 시트 이름 (예: Sheet1)
-
-        // 스프레드시트 데이터를 불러오는 함수
-        google.charts.setOnLoadCallback(function() {
-            const query = new google.visualization.Query(
-                `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&range=${range}`
-            );
-
-            query.send(function(response) {
-                const data = response.getDataTable();
-                const table = document.getElementById('orderList');
-                
-                // 주문 내역 테이블 생성
-                const headerRow = document.createElement('tr');
-                for (let i = 0; i < data.getNumberOfColumns(); i++) {
-                    const headerCell = document.createElement('th');
-                    headerCell.textContent = data.getColumnLabel(i);
-                    headerRow.appendChild(headerCell);
-                }
-                table.appendChild(headerRow);
-
-                // 데이터 행 추가
-                for (let i = 0; i < data.getNumberOfRows(); i++) {
-                    const row = document.createElement('tr');
-                    for (let j = 0; j < data.getNumberOfColumns(); j++) {
-                        const cell = document.createElement('td');
-                        cell.textContent = data.getValue(i, j);
-                        row.appendChild(cell);
-                    }
-                    table.appendChild(row);
-                }
-            });
+        // 주문 내역을 표에 추가
+        orders.forEach(order => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${order.name}</td>
+                <td>${order.menu}</td>
+                <td>${order.pickupTime}</td>
+            `;
+            orderTableBody.appendChild(row);
         });
     </script>
 </body>
 </html>
+
