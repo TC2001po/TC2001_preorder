@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>직원 전용 선주문 페이지</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery 라이브러리 -->
+    <title>직원 전용 카페 선주문</title>
 </head>
 <body>
-    <h1>직원 전용 선주문</h1>
-    
+    <h1>직원 전용 카페 선주문 페이지</h1>
+
     <!-- 주문 폼 -->
     <form id="orderForm">
         <label for="name">주문자 이름:</label><br>
@@ -30,57 +29,35 @@
         <button type="submit">주문하기</button>
     </form>
 
-    <!-- 주문 확인 메시지 -->
-    <div id="confirmationMessage" style="display: none;">
-        <p id="orderDetails"></p>
-        <button id="confirmOrder">확인</button>
-        <button id="cancelOrder">취소</button>
-    </div>
-
-    <p id="successMessage" style="display: none; color: green;">주문이 완료되었습니다!</p>
+    <!-- 관리자 페이지로 이동하는 버튼 -->
+    <br>
+    <button id="adminButton" onclick="window.location.href='admin.html'">관리자 페이지로 이동</button>
 
     <script>
         // 폼 제출 처리
-        $('#orderForm').on('submit', function (e) {
+        document.getElementById('orderForm').addEventListener('submit', function (e) {
             e.preventDefault(); // 페이지 리로드 방지
 
             // 폼 값 가져오기
-            const name = $('#name').val();
-            const menu = $('#menu').val();
-            const quantity = $('#quantity').val();
-            const pickupTime = $('#pickupTime').val();
+            const name = document.getElementById('name').value;
+            const menu = document.getElementById('menu').value;
+            const quantity = document.getElementById('quantity').value;
+            const pickupTime = document.getElementById('pickupTime').value;
 
-            // 확인 메시지 생성
-            let orderMessage = `${name}님, ${menu}를 ${quantity}잔 ${pickupTime}에 픽업하시겠습니까?`;
-
-            // 확인 메시지 표시
-            $('#orderDetails').text(orderMessage);
-            $('#confirmationMessage').show();
-        });
-
-        // 주문 확인
-        $('#confirmOrder').on('click', function () {
-            // 주문 완료 메시지 표시
-            $('#successMessage').show();
-            $('#confirmationMessage').hide();
-
-            // 관리 페이지에 주문 내역 추가 (간단한 로컬 저장 사용)
+            // 주문 내역을 로컬 저장소에 저장
             const order = {
-                name: $('#name').val(),
-                menu: $('#menu').val(),
-                quantity: $('#quantity').val(),
-                pickupTime: $('#pickupTime').val(),
+                name: name,
+                menu: menu,
+                quantity: quantity,
+                pickupTime: pickupTime
             };
 
-            let orders = JSON.parse(localStorage.getItem('orders')) || [];
-            orders.push(order);
-            localStorage.setItem('orders', JSON.stringify(orders));
-        });
+            // 로컬 저장소에 저장
+            localStorage.setItem('order', JSON.stringify(order));
 
-        // 주문 취소
-        $('#cancelOrder').on('click', function () {
-            $('#confirmationMessage').hide();
+            alert('주문 정보가 저장되었습니다!');
         });
     </script>
 </body>
 </html>
+

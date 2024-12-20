@@ -7,37 +7,26 @@
 </head>
 <body>
     <h1>주문 내역</h1>
-    
-    <table id="orderTable">
-        <thead>
-            <tr>
-                <th>주문자 이름</th>
-                <th>메뉴</th>
-                <th>갯수</th>
-                <th>픽업 시간</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- 주문 내역이 여기에 표시됩니다 -->
-        </tbody>
-    </table>
+
+    <!-- 주문 내역 표시 -->
+    <div id="orderDetails"></div>
 
     <script>
-        // 로컬 저장소에서 주문 내역 가져오기
-        const orders = JSON.parse(localStorage.getItem('orders')) || [];
+        // 로컬 저장소에서 주문 정보 가져오기
+        const order = JSON.parse(localStorage.getItem('order'));
 
-        // 주문 내역 테이블에 추가
-        const tableBody = document.querySelector('#orderTable tbody');
-        orders.forEach(order => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${order.name}</td>
-                <td>${order.menu}</td>
-                <td>${order.quantity}</td>
-                <td>${order.pickupTime}</td>
+        if (order) {
+            // 주문 정보가 있으면 화면에 표시
+            const orderDetails = `
+                <p>주문자: ${order.name}</p>
+                <p>메뉴: ${order.menu}</p>
+                <p>갯수: ${order.quantity}</p>
+                <p>픽업 시간: ${order.pickupTime}</p>
             `;
-            tableBody.appendChild(row);
-        });
+            document.getElementById('orderDetails').innerHTML = orderDetails;
+        } else {
+            document.getElementById('orderDetails').innerHTML = '주문 내역이 없습니다.';
+        }
     </script>
 </body>
 </html>
