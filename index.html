@@ -127,42 +127,37 @@
   }
 });
 
-
-  
-
-if (!orderSummary) {
-  alert("주문할 항목이 없습니다. 메뉴를 선택해주세요.");
-  return;
-}
-
 const pickupTime = document.getElementById('pickup-datetime').value;
+
 if (!pickupTime) {
   alert("픽업 시간을 입력해주세요.");
   return;
 }
 
-// pickupTime을 ISO 형식으로 변환 (예: 2024-12-21T07:00:00)
-const formattedPickupTime = new Date(pickupTime).toISOString();
+  if (!orderSummary) {
+    alert("주문할 항목이 없습니다. 메뉴를 선택해주세요.");
+    return;
+  }
 
-const confirmation = confirm(`주문 내역을 확인해주세요:\n\n${orderSummary}\n픽업 시간: ${formattedPickupTime}\n\n이대로 주문하시겠습니까?`);
-
-if (confirmation) {
-  fetch('/api/orders', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ orders, pickupTime: formattedPickupTime })
-  })
-  .then(response => response.json())
-  .then(data => {
-    alert("주문이 완료되었습니다!");
-  })
-  .catch(error => {
-    alert("주문 처리 중 오류가 발생했습니다.");
-  });
-} else {
-  alert("주문이 취소되었습니다.");
+  const confirmation = confirm(`주문 내역을 확인해주세요:\n\n${orderSummary}\n픽업 시간: ${pickupTime}\n\n이대로 주문하시겠습니까?`);
+  if (confirmation) {
+    fetch('/api/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ orders, pickupTime })
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert("주문이 완료되었습니다!");
+    })
+    .catch(error => {
+      alert("주문 처리 중 오류가 발생했습니다.");
+    });
+  } else {
+    alert("주문이 취소되었습니다.");
+  }
 }
 
 
