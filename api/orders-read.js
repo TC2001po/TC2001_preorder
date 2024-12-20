@@ -1,16 +1,11 @@
-// 기존 import
-// import { createClient } from '@supabase/supabase-js';
-
-// 변경된 require 문
-const { createClient } = require('@supabase/supabase-js');
-
+// ES 모듈에서 import 사용
+import { createClient } from '@supabase/supabase-js';
 
 // Supabase URL과 키를 환경 변수로 설정
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
-
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
