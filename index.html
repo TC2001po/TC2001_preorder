@@ -103,28 +103,30 @@
   }
 
   orderList.forEach(item => {
-    const menu = item.querySelector('select[name="menu"]');
-    const hotIce = item.querySelector('select[name="hotIce"]');
-    const count = item.querySelector('input[name="count"]');
-    
-    const checkedOptions = [];
-    const options = item.querySelectorAll('.options input[type="checkbox"]:checked');
-    options.forEach(option => {
-      checkedOptions.push(option.value);
-    });
+  const menu = item.querySelector('input[name="menu"]');  // <input>으로 수정
+  const hotIce = item.querySelector('select[name="hotIce"]');
+  const count = item.querySelector('input[name="count"]');
 
-    if (menu && hotIce && count) {
-      orders.push({
-        menu: menu.value,
-        hotIce: hotIce.value,
-        options: checkedOptions.join(', '),
-        count: count.value,
-        customerName: customerName,  // form-container에서 가져온 이름
-        customerAffiliation: customerAffiliation  // form-container에서 가져온 소속
-      });
-      orderSummary += `${menu.value} (${hotIce.value}) - 옵션: ${checkedOptions.join(', ')} - ${count.value}잔 - 이름: ${customerName} - 소속: ${customerAffiliation}\n`;
-    }
+  const checkedOptions = [];
+  const options = item.querySelectorAll('.options input[type="checkbox"]:checked');
+  options.forEach(option => {
+    checkedOptions.push(option.value);
   });
+
+  // menu, hotIce, count가 모두 존재하는지 체크
+  if (menu && hotIce && count && menu.value && hotIce.value && count.value) {
+    orders.push({
+      menu: menu.value,
+      hotIce: hotIce.value,
+      options: checkedOptions.join(', '),
+      count: count.value,
+      customerName: customerName,  
+      customerAffiliation: customerAffiliation  
+    });
+    orderSummary += `${menu.value} (${hotIce.value}) - 옵션: ${checkedOptions.join(', ')} - ${count.value}잔 - 이름: ${customerName} - 소속: ${customerAffiliation}\n`;
+  }
+});
+
 
   const pickupTime = document.getElementById('pickup-datetime').value;
 
