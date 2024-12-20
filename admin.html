@@ -4,87 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>주문 내역</title>
-  <style>
-    table {
-      width: 100%;
-      border-collapse: collapse;
+  <script>
+    // 페이지 로드 시 주문 내역을 실시간으로 가져오는 함수
+    async function loadOrders() {
+      try {
+        const response = await fetch('/api/orders-read');
+        const data = await response.json();
+        const ordersContainer = document.getElementById('orders-container');
+        ordersContainer.innerHTML = '';
+
+        if (data.orders.length === 0) {
+          ordersContainer.innerHTML = '<p>주문 내역이 없습니다.</p>';
+        } else {
+          data.orders.forEach(order => {
+            const orderElement = document.createElement('div');
+            orderElement.innerHTML = `
+              <p>메뉴: ${order.menu}, 온도: ${order.hotIce}, 수량: ${order.count}잔</p>
+              <p>옵션: ${order.options}</p>
+              <p>이름: ${order.customerName}, 소속: ${order.customerAffiliation}</p>
+              <p>픽업 시간: ${order.pickupTime}</p>
+              <hr />
+            `;
+            ordersContainer.appendChild(orderElement);
+          });
+        }
+      } catch (error) {
+        console.error('주문 내역을 불러오는 중 오류가 발생했습니다.', error);
+      }
     }
-    th, td {
-      padding: 8px 12px;
-      border: 1px solid #ccc;
-      text-align: left;
-    }
-    th {
-      background-color: #f4f4f4;
-    }
-    .order-list {
-      margin-top: 20px;
-    }
-    .alert {
-      color: red;
-      font-weight: bold;
-    }
-  </style>
+
+    // 페이지 로드 시 자동으로 주문 내역을 가져옴
+    window.onload = loadOrders;
+  </script>
 </head>
 <body>
   <h1>주문 내역</h1>
-
-  <!-- 주문 내역을 표시할 테이블 -->
-  <table>
-    <thead>
-      <tr>
-        <th>주문자 이름</th>
-        <th>소속</th>
-        <th>주문 내역</th>
-        <th>픽업 시간</th>
-        <th>주문 시간</th>
-      </tr>
-    </thead>
-    <tbody id="order-list">
-      <!-- 주문 내역은 여기에서 동적으로 삽입됩니다. -->
-    </tbody>
-  </table>
-
-  <button id="refresh-button">새로고침</button>
-
-  <script>
-    // 새로고침 버튼 클릭 시 주문 내역을 다시 불러옵니다.
-    document.getElementById('refresh-button').addEventListener('click', loadOrders);
-
-    // 주문 내역을 불러오는 함수
-    function loadOrders() {
-      fetch('/api/orders')
-        .then(response => response.json())
-        .then(data => {
-          const orderList = document.getElementById('order-list');
-          orderList.innerHTML = '';  // 기존 내용을 지웁니다.
-
-          if (data.length === 0) {
-            const alertMessage = document.createElement('tr');
-            alertMessage.innerHTML = '<td colspan="5" class="alert">현재 주문 내역이 없습니다.</td>';
-            orderList.appendChild(alertMessage);
-          } else {
-            // 각 주문을 테이블에 표시
-            data.forEach(order => {
-              const row = document.createElement('tr');
-              row.innerHTML = `
-                <td>${order.customerName}</td>
-                <td>${order.customerAffiliation}</td>
-                <td>${order.orders.map(item => `${item.menu} (${item.hotIce}) - 옵션: ${item.options} - ${item.count}잔`).join('<br>')}</td>
-                <td>${order.pickupTime}</td>
-                <td>${order.orderTime}</td>
-              `;
-              orderList.appendChild(row);
-            });
-          }
-        })
-        .catch(error => {
-          console.error('주문 정보를 불러오는 중 오류가 발생했습니다.', error);
-        });
-    }
-
-    // 페이지 로드 시 바로 주문 내역을 불러옵니다.
-    window.onload = loadOrders;
-  </script>
+  <div id="orders-container"></div>
 </body>
 </html>

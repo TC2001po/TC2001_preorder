@@ -1,30 +1,27 @@
-const express = require('express');
-const app = express();
-const port = 3000;
+import fs from 'fs';
+import path from 'path';
 
-app.use(express.json());
+const ordersFilePath = path.join(process.cwd(), 'orders.json');
 
-let orders = [];  // 주문을 저장할 배열
+// 주문 데이터를 JSON 파일에 저장하는 함수
+const saveOrderToFile = (orders) => {
+  const currentOrders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf-8') || '[]');
+  currentOrders.push(...orders);
+  fs.writeFileSync(ordersFilePath, JSON.stringify(currentOrders, null, 2), 'utf-8');
+};
 
-// POST /api/orders - 주문을 서버에 저장
-app.post('/api/orders', (req, res) => {
-  const { orders: orderDetails, pickupTime, customerName, customerAffiliation } = req.body;
-  const order = {
-    orders: orderDetails,
-    pickupTime,
-    customerName,
-    customerAffiliation,
-    orderTime: new Date().toLocaleString()  // 주문 시간이 포함된 정보
-  };
-  orders.push(order);  // 주문 정보 저장
-  res.json({ message: '주문이 완료되었습니다!', order });
-});
+export default async function handler(req, res) {
+  if (req.method === 'POST') {
+    const { orders, pickupTime } = req.body;
 
-// GET /api/orders - 주문 내역을 가져오는 API
-app.get('/api/orders', (req, res) => {
-  res.json(orders);
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+    try {
+      saveOrderToFile(orders);
+      res.status(200).json({ message: '주문이 성공적으로 처리되었습니다.' });
+    } catch (error) {
+      console.error('File write error:', error);
+      res.status(500).json({ message: '주문 처리 중 오류가 발생했습니다.' });
+    }
+  } else {
+    res.status(405).json({ message: 'Method Not Allowed' });
+  }
+}
