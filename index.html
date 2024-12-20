@@ -166,10 +166,13 @@
 </head>
 <body>
   <h1>2001아울렛 분당점 직원 전용 더카페 선주문 페이지</h1>
-  <img src="logo.png" alt="Logo">
+  <img src="menu.jpg" alt="Logo">
   <div class="form-container">
     <label for="name">이름</label>
     <input type="text" id="name" placeholder="이름을 입력하세요">
+
+    <label for="work">소속</label>
+    <input type="text" id="name" placeholder="소속을 입력하세요">
 
     <label for="pickup-time">픽업 시간</label>
     <input type="time" id="pickup-time">
@@ -228,5 +231,7 @@
       <button type="button" onclick="confirmOrder()">주문 확인</button>
     </div>
   </div>
+  <!-- 관리자 페이지로 이동하는 버튼 -->
+  <button class="admin-button" onclick="checkPassword()">관리자 페이지</button>
 </body>
 </html>
