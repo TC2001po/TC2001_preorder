@@ -88,24 +88,38 @@
 
     // 주문 내역을 확인하는 함수
     function confirmOrder() {
-      const orderList = document.querySelectorAll('.menu-item');
-      let orderSummary = '';
-      orderList.forEach(item => {
-        const menu = item.querySelector('select[name="menu"]').value;
-        const hotIce = item.querySelector('select[name="hotIce"]').value;
-        const options = item.querySelector('select[name="options"]').value;
-        const count = item.querySelector('input[name="count"]').value;
-        
-        orderSummary += `${menu} (${hotIce}) - 옵션: ${options} - ${count}잔\n`;
-      });
-      const pickupTime = document.getElementById('pickup-time').value;
-      const confirmation = confirm(`주문 내역을 확인해주세요:\n\n${orderSummary}\n픽업 시간: ${pickupTime}\n\n이대로 주문하시겠습니까?`);
-      if (confirmation) {
-        alert("주문이 완료되었습니다!");
-      } else {
-        alert("주문이 취소되었습니다.");
-      }
+  const orderList = document.querySelectorAll('.menu-item');
+  let orderSummary = '';
+  
+  // 각 메뉴 항목에서 주문 정보를 가져옵니다.
+  orderList.forEach(item => {
+    const menu = item.querySelector('select[name="menu"]');
+    const hotIce = item.querySelector('select[name="hotIce"]');
+    const options = item.querySelector('select[name="options"]');
+    const count = item.querySelector('input[name="count"]');
+    
+    // 값이 존재하는지 확인 후 사용
+    if (menu && hotIce && options && count) {
+      orderSummary += `${menu.value} (${hotIce.value}) - 옵션: ${options.value} - ${count.value}잔\n`;
     }
+  });
+  
+  const pickupTime = document.getElementById('pickup-time').value;
+  
+  // 주문 항목이 없으면 알림
+  if (!orderSummary) {
+    alert("주문할 항목이 없습니다. 메뉴를 선택해주세요.");
+    return;
+  }
+  
+  const confirmation = confirm(`주문 내역을 확인해주세요:\n\n${orderSummary}\n픽업 시간: ${pickupTime}\n\n이대로 주문하시겠습니까?`);
+  if (confirmation) {
+    alert("주문이 완료되었습니다!");
+  } else {
+    alert("주문이 취소되었습니다.");
+  }
+}
+
 
     // 메뉴 항목 추가 기능
     function addMenuItem() {
