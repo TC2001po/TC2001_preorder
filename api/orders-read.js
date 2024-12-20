@@ -1,4 +1,9 @@
-import { createClient } from '@supabase/supabase-js';
+// 기존 import
+// import { createClient } from '@supabase/supabase-js';
+
+// 변경된 require 문
+const { createClient } = require('@supabase/supabase-js');
+
 
 // Supabase URL과 키를 환경 변수로 설정
 const supabaseUrl = process.https://emrjszlukuetqjncslqs.supabase.co;
