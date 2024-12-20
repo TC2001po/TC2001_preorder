@@ -103,45 +103,43 @@
   }
 
   orderList.forEach(item => {
-  const menu = item.querySelector('input[name="menu"]');  // <input>으로 수정
-  const hotIce = item.querySelector('select[name="hotIce"]');
-  const count = item.querySelector('input[name="count"]');
+    const menu = item.querySelector('input[name="menu"]');  // <input>으로 변경된 메뉴 필드
+    const hotIce = item.querySelector('select[name="hotIce"]');
+    const count = item.querySelector('input[name="count"]');
 
-  const checkedOptions = [];
-  const options = item.querySelectorAll('.options input[type="checkbox"]:checked');
-  options.forEach(option => {
-    checkedOptions.push(option.value);
+    const checkedOptions = [];
+    const options = item.querySelectorAll('.options input[type="checkbox"]:checked');
+    options.forEach(option => {
+      checkedOptions.push(option.value);
+    });
+
+    // menu, hotIce, count가 모두 존재하는지 체크
+    if (menu && hotIce && count) {
+      const menuValue = menu.value.trim() !== '' ? menu.value : '기타';  // 메뉴 값이 비어있으면 '기타'
+      orders.push({
+        menu: menuValue,
+        hotIce: hotIce.value,
+        options: checkedOptions.join(', '),
+        count: count.value,
+        customerName: customerName,  
+        customerAffiliation: customerAffiliation  
+      });
+      orderSummary += `${menuValue} (${hotIce.value}) - 옵션: ${checkedOptions.join(', ')} - ${count.value}잔 - 이름: ${customerName} - 소속: ${customerAffiliation}\n`;
+    }
   });
 
-  // menu, hotIce, count가 모두 존재하는지 체크
-  if (menu && hotIce && count) {
-    const menuValue = menu.value.trim() !== '' ? menu.value : '기타';
-    orders.push({
-      menu: menuValue,
-      hotIce: hotIce.value,
-      options: checkedOptions.join(', '),
-      count: count.value,
-      customerName: customerName,  
-      customerAffiliation: customerAffiliation  
-    });
-    orderSummary += `${menuValue} (${hotIce.value}) - 옵션: ${checkedOptions.join(', ')} - ${count.value}잔 - 이름: ${customerName} - 소속: ${customerAffiliation}\n`;
+  const pickupTime = document.getElementById('pickup-datetime').value;
+
+  if (!pickupTime) {
+    alert("픽업 시간을 입력해주세요.");
+    return;
   }
-});
-
-const pickupTime = document.getElementById('pickup-datetime').value;
-
-if (!pickupTime) {
-  alert("픽업 시간을 입력해주세요.");
-  return;
-}
 
   if (!orderSummary) {
     alert("주문할 항목이 없습니다. 메뉴를 선택해주세요.");
     return;
   }
-  
-  console.log(orders);
-  
+
   const confirmation = confirm(`주문 내역을 확인해주세요:\n\n${orderSummary}\n픽업 시간: ${pickupTime}\n\n이대로 주문하시겠습니까?`);
   if (confirmation) {
     fetch('/api/orders', {
@@ -165,14 +163,15 @@ if (!pickupTime) {
 
 
 
+
     // 메뉴 항목 추가 기능
-function addMenuItem() {
+    function addMenuItem() {
   const menuContainer = document.getElementById('menu-container');
   const newMenuItem = document.createElement('div');
   newMenuItem.classList.add('menu-item');
   newMenuItem.innerHTML = `
     <label>메뉴</label>
-    <input type="text" name="menu" placeholder="메뉴를 입력하세요" />
+    <input type="text" name="menu" placeholder="메뉴를 입력하세요" /> <!-- 메뉴를 자유롭게 입력 -->
 
     <label>핫/아이스</label>
     <select name="hotIce">
