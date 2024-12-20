@@ -55,10 +55,22 @@
       margin-top: 20px;
     }
     .menu-item {
-      margin: 10px 0;
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+    .menu-item label {
+      margin-bottom: 5px;
     }
     .options {
       margin-left: 20px;
+    }
+    .menu-item select, .menu-item input {
+      width: auto;
+      display: inline-block;
+      margin-right: 10px;
     }
   </style>
   <script>
@@ -207,7 +219,7 @@
         </select>
 
         <label>개수</label>
-        <input type="number" name="count" value="1" min="1" />
+        <input type="number" name="count" value="1" min="1">
       </div>
     </div>
 
