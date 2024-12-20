@@ -13,15 +13,8 @@
         <label for="name">주문자 이름:</label><br>
         <input type="text" id="name" name="name" required><br><br>
 
-        <label for="menu">메뉴 선택:</label><br>
-        <select id="menu" name="menu" required>
-            <option value="아메리카노">아메리카노</option>
-            <option value="라떼">라떼</option>
-            <option value="카페모카">카페모카</option>
-        </select><br><br>
-
-        <label for="quantity">갯수:</label><br>
-        <input type="number" id="quantity" name="quantity" min="1" required><br><br>
+        <label for="menu">메뉴와 갯수 (예: 아메리카노 2, 라떼 1):</label><br>
+        <input type="text" id="menu" name="menu" required placeholder="메뉴와 갯수를 입력하세요"><br><br>
 
         <label for="pickupTime">픽업 시간:</label><br>
         <input type="time" id="pickupTime" name="pickupTime" required><br><br>
@@ -41,23 +34,22 @@
             // 폼 값 가져오기
             const name = document.getElementById('name').value;
             const menu = document.getElementById('menu').value;
-            const quantity = document.getElementById('quantity').value;
             const pickupTime = document.getElementById('pickupTime').value;
 
             // 주문 내역을 로컬 저장소에 저장
             const order = {
                 name: name,
                 menu: menu,
-                quantity: quantity,
                 pickupTime: pickupTime
             };
 
             // 로컬 저장소에 저장
-            localStorage.setItem('order', JSON.stringify(order));
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders.push(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
 
             alert('주문 정보가 저장되었습니다!');
         });
     </script>
 </body>
 </html>
-
