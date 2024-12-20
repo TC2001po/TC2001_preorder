@@ -1,47 +1,37 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문 내역</title>
+    <link rel="stylesheet" href="styles.css"> <!-- 꾸미기용 파일 -->
 </head>
+<script src="orders.js"></script>
 <body>
-    <h1>주문 내역</h1>
-    <table id="orders-table">
-        <thead>
-            <tr>
-                <th>주문자</th>
-                <th>메뉴</th>
-                <th>수량</th>
-                <th>픽업 시간</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- 주문 내역이 여기에 표시됩니다 -->
-        </tbody>
-    </table>
-
-    <script>
-        async function fetchOrders() {
-            const response = await fetch('/api/orders');
-            const orders = await response.json();
-            const tableBody = document.querySelector('#orders-table tbody');
-            tableBody.innerHTML = ''; // 기존 데이터를 지우고 새로 삽입
-
-            orders.forEach(order => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${order.name}</td>
-                    <td>${order.menu}</td>
-                    <td>${order.quantity}</td>
-                    <td>${order.pickupTime}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-
-        // 페이지가 로드될 때 주문 내역을 불러옵니다.
-        window.onload = fetchOrders;
-    </script>
+    <header>
+        <h1>주문 내역</h1> <!-- 페이지 제목 -->
+    </header>
+    <main>
+        <div id="order-list">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>주문자</th>
+                        <th>메뉴</th>
+                        <th>수량</th>
+                        <th>옵션</th>
+                        <th>수령 시간</th>
+                    </tr>
+                </thead>
+                <tbody id="order-rows">
+                    <!-- 주문 내용이 여기에 들어갑니다 -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <footer>
+        <p>관리자 페이지 버튼</p>
+    </footer>
 </body>
 </html>

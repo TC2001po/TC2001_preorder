@@ -1,18 +1,51 @@
-// api/orders.js
-let orders = [];
+const API_URL = 'http://localhost:3000/orders'; // 서버 주소
 
-export default function handler(req, res) {
-    if (req.method === 'POST') {
-        // POST 요청은 새로운 주문을 추가
-        const { name, menu, quantity, pickupTime } = req.body;
-        const newOrder = { name, menu, quantity, pickupTime };
-        orders.push(newOrder);
-        res.status(200).json({ message: '주문이 성공적으로 저장되었습니다.' });
-    } else if (req.method === 'GET') {
-        // GET 요청은 주문 목록을 반환
-        res.status(200).json(orders);
-    } else {
-        // 지원되지 않는 HTTP 메서드
-        res.status(405).json({ message: 'Method Not Allowed' });
+// 주문 데이터를 불러와 화면에 표시하는 함수
+async function loadOrders() {
+    try {
+        const response = await fetch(API_URL); // 서버에서 데이터 가져오기
+        const orders = await response.json();
+
+        // 데이터를 화면에 표시
+        const orderRows = document.getElementById('order-rows');
+        orderRows.innerHTML = '';
+
+        orders.forEach(order => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${order.id}</td>
+                <td>${order.customer}</td>
+                <td>${order.menu}</td>
+                <td>${order.quantity}</td>
+                <td>${order.options}</td>
+                <td>${order.pickup_time}</td>
+            `;
+            orderRows.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error loading orders:', error);
     }
 }
+
+// 새로운 주문을 서버에 보내는 함수
+async function addOrder(order) {
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(order),
+        });
+
+        if (response.ok) {
+            alert('Order added successfully!');
+            loadOrders(); // 주문 목록 다시 불러오기
+        }
+    } catch (error) {
+        console.error('Error adding order:', error);
+    }
+}
+
+// 페이지 로드 시 주문 데이터 불러오기
+window.onload = loadOrders;
