@@ -1,54 +1,50 @@
+<!-- orders.html (관리자 페이지) -->
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문 내역</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-    </style>
 </head>
 <body>
     <h1>주문 내역</h1>
-
-    <table>
+    <table id="ordersTable">
         <thead>
             <tr>
                 <th>주문자</th>
                 <th>메뉴</th>
+                <th>갯수</th>
                 <th>픽업 시간</th>
             </tr>
         </thead>
-        <tbody id="orderTableBody">
-            <!-- 주문 내역이 여기에 추가됩니다 -->
+        <tbody>
+            <!-- 주문 내역이 여기에 표시됩니다. -->
         </tbody>
     </table>
 
     <script>
-        // 로컬 저장소에서 주문 내역 가져오기
-        const orders = JSON.parse(localStorage.getItem('orders')) || [];
-        const orderTableBody = document.getElementById('orderTableBody');
+        // 서버에서 주문 내역을 불러옵니다.
+        async function fetchOrders() {
+            const response = await fetch('https://your-heroku-app.herokuapp.com/orders');
+            const orders = await response.json();
 
-        // 주문 내역을 표에 추가
-        orders.forEach(order => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${order.name}</td>
-                <td>${order.menu}</td>
-                <td>${order.pickupTime}</td>
-            `;
-            orderTableBody.appendChild(row);
-        });
+            const tableBody = document.querySelector('#ordersTable tbody');
+            tableBody.innerHTML = ''; // 기존 내용을 지운 후
+
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.name}</td>
+                    <td>${order.menu}</td>
+                    <td>${order.quantity}</td>
+                    <td>${order.pickupTime}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // 페이지가 로드될 때 주문 내역을 불러옵니다.
+        fetchOrders();
     </script>
 </body>
 </html>
