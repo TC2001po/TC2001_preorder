@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문 내역</title>
+</head>
+<body>
+    <h1>주문 내역</h1>
+    <ul id="orderList">
+        <!-- 주문 내역을 여기 표시 -->
+    </ul>
+
+    <script>
+        // 예시로 주문 내역을 하드코딩 (실제로는 서버나 데이터베이스에서 받아올 것)
+        const orders = [
+            { id: 1, name: "김철수", item: "아메리카노", time: "12:30" },
+            { id: 2, name: "이영희", item: "라떼", time: "12:35" },
+            { id: 3, name: "박민수", item: "티라미수 라떼", time: "12:40" }
+        ];
+
+        const orderList = document.getElementById("orderList");
+
+        orders.forEach(order => {
+            const listItem = document.createElement("li");
+            listItem.textContent = `${order.name}님: ${order.item} (${order.time})`;
+            orderList.appendChild(listItem);
+        });
+    </script>
+</body>
+</html>
