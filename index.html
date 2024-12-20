@@ -57,6 +57,9 @@
     .menu-item {
       margin: 10px 0;
     }
+    .options {
+      margin-left: 20px;
+    }
   </style>
   <script>
     // 비밀번호 확인 후 관리자 페이지로 이동하는 함수
@@ -123,16 +126,51 @@
 
     <!-- 메뉴 선택 및 개수 -->
     <div id="menu-container">
+      <!-- 메뉴 리스트 -->
       <div class="menu-item">
-        <label>메뉴 / 개수 / 옵션</label>
-        <input type="checkbox" name="menu-item" value="메뉴 예시" data-count="1"> 메뉴 예시
+        <label>메뉴: 에스프레소</label>
+        <input type="checkbox" name="menu-item" value="에스프레소" data-count="1">
         <input type="number" name="quantity" value="1" min="1" style="width: 80px;">
         <select>
-          <option value="옵션1">옵션1</option>
-          <option value="옵션2">옵션2</option>
-          <option value="옵션3">옵션3</option>
+          <option value="디카페인 변경 +1,000">디카페인 변경 +1,000</option>
+          <option value="오트우유 변경 +500">오트우유 변경 +500</option>
+          <option value="덜 달게">덜 달게</option>
+          <option value="시럽 제거">시럽 제거</option>
+          <option value="물 절반 (진하게)">물 절반 (진하게)</option>
+          <option value="샷 절반 (연하게)">샷 절반 (연하게)</option>
+          <option value="버블 추가">버블 추가</option>
+          <option value="샷 추가 (반샷)">샷 추가 (반샷)</option>
+          <option value="더블샷 추가 (원샷)">더블샷 추가 (원샷)</option>
+          <option value="휘핑 x">휘핑 x</option>
+          <option value="휘핑 o">휘핑 o</option>
+          <option value="아주 뜨겁게">아주 뜨겁게</option>
+          <option value="미적지근하게">미적지근하게</option>
         </select>
       </div>
+
+      <div class="menu-item">
+        <label>메뉴: 아메리카노</label>
+        <input type="checkbox" name="menu-item" value="아메리카노" data-count="1">
+        <input type="number" name="quantity" value="1" min="1" style="width: 80px;">
+        <select>
+          <option value="디카페인 변경 +1,000">디카페인 변경 +1,000</option>
+          <option value="오트우유 변경 +500">오트우유 변경 +500</option>
+          <option value="덜 달게">덜 달게</option>
+          <option value="시럽 제거">시럽 제거</option>
+          <option value="물 절반 (진하게)">물 절반 (진하게)</option>
+          <option value="샷 절반 (연하게)">샷 절반 (연하게)</option>
+          <option value="버블 추가">버블 추가</option>
+          <option value="샷 추가 (반샷)">샷 추가 (반샷)</option>
+          <option value="더블샷 추가 (원샷)">더블샷 추가 (원샷)</option>
+          <option value="휘핑 x">휘핑 x</option>
+          <option value="휘핑 o">휘핑 o</option>
+          <option value="아주 뜨겁게">아주 뜨겁게</option>
+          <option value="미적지근하게">미적지근하게</option>
+        </select>
+      </div>
+
+      <!-- 다른 메뉴 항목들에도 비슷한 형식으로 추가할 수 있습니다. -->
+
     </div>
 
     <!-- 메뉴 추가 버튼 -->
