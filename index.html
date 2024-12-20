@@ -100,6 +100,7 @@
     
     // 값이 존재하는지 확인 후 사용
     if (menu && hotIce && options && count) {
+      console.log("메뉴:", menu.value, "수량:", count.value);  // 디버깅을 위한 로그
       orderSummary += `${menu.value} (${hotIce.value}) - 옵션: ${options.value} - ${count.value}잔\n`;
     }
   });
@@ -119,6 +120,7 @@
     alert("주문이 취소되었습니다.");
   }
 }
+
 
 
     // 메뉴 항목 추가 기능
@@ -213,6 +215,7 @@
 
         <label>옵션</label>
     <div class="options">
+      <label><input type="checkbox" name="options_zr" value="없음"> 없음</label>
       <label><input type="checkbox" name="options_dc" value="디카페인 변경 (+1,000)"> 디카페인 변경 (+1,000)</label>
       <label><input type="checkbox" name="options_ot" value="오트우유 변경 (+500)"> 오트우유 변경 (+500)</label>
       <label><input type="checkbox" name="options_ls" value="덜 달게"> 덜 달게</label>
@@ -342,6 +345,7 @@
 
         <label>옵션</label>
     <div class="options">
+      <label><input type="checkbox" name="options_zr" value="없음"> 없음</label>
       <label><input type="checkbox" name="options_dc" value="디카페인 변경 (+1,000)"> 디카페인 변경 (+1,000)</label>
       <label><input type="checkbox" name="options_ot" value="오트우유 변경 (+500)"> 오트우유 변경 (+500)</label>
       <label><input type="checkbox" name="options_ls" value="덜 달게"> 덜 달게</label>
