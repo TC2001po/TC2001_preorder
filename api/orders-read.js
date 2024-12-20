@@ -1,36 +1,33 @@
+// 기존 import
+// import { createClient } from '@supabase/supabase-js';
+
+// 변경된 require 문
 const { createClient } = require('@supabase/supabase-js');
 
+
+// Supabase URL과 키를 환경 변수로 설정
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-module.exports = async function handler(req, res) {
-  if (req.method === 'POST') {
-    const { menu, hotIce, count, options, customerName, customerAffiliation, pickupTime } = req.body;
 
-    const { data, error } = await supabase
-      .from('orders')
-      .insert([
-        {
-          menu,
-          hotIce,
-          count,
-          options,
-          customerName,
-          customerAffiliation,
-          pickupTime
-        }
-      ]);
+export default async function handler(req, res) {
+  if (req.method === 'GET') {
+    try {
+      const { data, error } = await supabase
+        .from('orders')
+        .select('*');
 
-    if (error) {
-      console.error('Supabase insert error:', error);
-      return res.status(500).json({ message: '주문 저장에 실패했습니다.' });
+      if (error) {
+        res.status(500).json({ error: '주문 데이터 조회 실패' });
+      } else {
+        res.status(200).json({ orders: data });
+      }
+    } catch (error) {
+      res.status(500).json({ error: '주문 데이터 조회 중 오류 발생' });
     }
-
-    console.log('Inserted order data:', data);
-    return res.status(200).json({ message: '주문이 성공적으로 저장되었습니다.' });
   } else {
-    res.status(405).json({ message: '허용되지 않은 HTTP 메서드입니다.' });
+    res.status(405).json({ error: '허용되지 않은 HTTP 메서드' });
   }
-};
+}

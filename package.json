@@ -1,8 +1,12 @@
 {
-    "name": "thecaffe_preorder_page",
+    "name": "thecaffe_preorder_pageset",
     "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+      "start": "node server.js"
+    },
     "dependencies": {
-        "@supabase/supabase-js": "^2.47.10",
-        "dotenv": "^16.4.7"
+      "@supabase/supabase-js": "^1.0.0"
     }
-}
+  }
+  
