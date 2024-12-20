@@ -3,45 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>관리자 페이지</title>
+    <title>주문 내역 - 관리자</title>
 </head>
 <body>
     <h1>주문 내역</h1>
-    <table id="orders-table">
+    <table border="1">
         <thead>
             <tr>
-                <th>주문자</th>
                 <th>메뉴</th>
+                <th>옵션</th>
                 <th>수량</th>
                 <th>픽업 시간</th>
             </tr>
         </thead>
-        <tbody>
-            <!-- 주문 내역이 여기에 표시됩니다 -->
+        <tbody id="order-list">
+            <!-- 주문 내역이 여기에 표시됩니다. -->
         </tbody>
     </table>
 
     <script>
-        async function fetchOrders() {
-            const response = await fetch('/api/orders');
-            const orders = await response.json();
-            const tableBody = document.querySelector('#orders-table tbody');
-            tableBody.innerHTML = ''; // 기존 데이터를 지우고 새로 삽입
-
-            orders.forEach(order => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${order.name}</td>
-                    <td>${order.menu}</td>
-                    <td>${order.quantity}</td>
-                    <td>${order.pickupTime}</td>
-                `;
-                tableBody.appendChild(row);
+        // 서버에서 주문 내역을 가져와서 표시
+        fetch('/api/orders')
+            .then(response => response.json())
+            .then(orders => {
+                const orderList = document.getElementById('order-list');
+                orders.forEach(order => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${order.menu}</td>
+                        <td>${order.options}</td>
+                        <td>${order.count}</td>
+                        <td>${order.pickupTime}</td>
+                    `;
+                    orderList.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('주문 내역을 가져오는 중 오류 발생:', error);
             });
-        }
-
-        // 페이지가 로드될 때 주문 내역을 불러옵니다.
-        window.onload = fetchOrders;
     </script>
 </body>
 </html>
