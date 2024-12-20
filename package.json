@@ -2,6 +2,7 @@
     "name": "thecaffe_preorder_page",
     "version": "1.0.0",
     "dependencies": {
-        "@supabase/supabase-js": "^2.47.10"
+        "@supabase/supabase-js": "^2.47.10",
+        "dotenv": "^16.4.7"
     }
 }

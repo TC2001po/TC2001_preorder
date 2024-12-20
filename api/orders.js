@@ -1,3 +1,8 @@
+require('dotenv').config();  // .env 파일에서 환경 변수 읽기
+
+console.log('Supabase URL:', process.env.SUPABASE_URL);
+console.log('Supabase Key:', process.env.SUPABASE_KEY);
+
 // 기존 import
 // import { createClient } from '@supabase/supabase-js';
 
