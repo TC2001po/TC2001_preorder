@@ -98,11 +98,7 @@
     const options = item.querySelector('select[name="options"]');
     const count = item.querySelector('input[name="count"]');
     
-    // 값이 존재하는지 확인 후 사용
-    if (menu && hotIce && options && count) {
-      console.log("메뉴:", menu.value, "수량:", count.value);  // 디버깅을 위한 로그
-      orderSummary += `${menu.value} (${hotIce.value}) - 옵션: ${options.value} - ${count.value}잔\n`;
-    }
+    
   });
   
   const pickupTime = document.getElementById('pickup-time').value;
