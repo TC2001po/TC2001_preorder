@@ -103,8 +103,8 @@
       checkedOptions.push(option.value);
     });
 
-    const customerName = item.querySelector('input[name="CustomerN"]').value;  // 각 item에서 name 값을 가져옴
-    const customerAffiliation = item.querySelector('input[name="CustomerI"]').value;  // 각 item에서 work 값을 가져옴
+    const customerName = document.querySelector('#CustomerN').value;
+  const customerAffiliation = document.querySelector('#CustomerI').value;
 
     if (menu && hotIce && count && customerName && customerAffiliation) {
       orders.push({
@@ -126,7 +126,7 @@
     return;
   }
   
-  if (!orders.length) {
+  if (!customerName || !customerAffiliation) {
     alert("주문자 이름과 소속을 입력해주세요.");
     return;
   }
