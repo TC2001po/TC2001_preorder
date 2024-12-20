@@ -1,27 +1,26 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Supabase 클라이언트 초기화
-const supabase = createClient('https://rcxnigdyufxbrvockynp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjeG5pZ2R5dWZ4YnJ2b2NreW5wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ3MjM5MzUsImV4cCI6MjA1MDI5OTkzNX0.MMYdhlUjr6OcG5CeOKqpjNm8S2hqNMmTvFOEzKhUo5Q');
+// Supabase URL과 키를 환경 변수로 설정
+const supabaseUrl = process.https://emrjszlukuetqjncslqs.supabase.co;
+const supabaseKey = process.env.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtcmpzemx1a3VldHFqbmNzbHFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ3MjUwNzQsImV4cCI6MjA1MDMwMTA3NH0.U-K6nR6pIZeOAlZjlLhOt_iE8WOAx9Nbi2SkpSyMRvM;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      // Supabase에서 모든 주문 내역 가져오기
       const { data, error } = await supabase
         .from('orders')
-        .select('*')
-        .order('id', { ascending: false }); // 최신 주문 순으로 정렬
+        .select('*');
 
       if (error) {
-        throw error;
+        res.status(500).json({ error: '주문 데이터 조회 실패' });
+      } else {
+        res.status(200).json({ orders: data });
       }
-
-      res.status(200).json({ orders: data });
     } catch (error) {
-      console.error('주문 내역을 불러오는 중 오류 발생:', error);
-      res.status(500).json({ message: '주문 내역을 불러오는 중 오류가 발생했습니다.' });
+      res.status(500).json({ error: '주문 데이터 조회 중 오류 발생' });
     }
   } else {
-    res.status(405).json({ message: 'Method Not Allowed' });
+    res.status(405).json({ error: '허용되지 않은 HTTP 메서드' });
   }
 }

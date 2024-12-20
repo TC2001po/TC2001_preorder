@@ -21,8 +21,8 @@
             orderElement.innerHTML = `
               <p>메뉴: ${order.menu}, 온도: ${order.hotIce}, 수량: ${order.count}잔</p>
               <p>옵션: ${order.options}</p>
-              <p>이름: ${order.customerName}, 소속: ${order.customerAffiliation}</p>
-              <p>픽업 시간: ${order.pickupTime}</p>
+              <p>이름: ${order.customer_name}, 소속: ${order.customer_affiliation}</p>
+              <p>픽업 시간: ${order.pickup_time}</p>
               <hr />
             `;
             ordersContainer.appendChild(orderElement);
@@ -38,7 +38,7 @@
   </script>
 </head>
 <body>
-  <h1>관리자 주문 내역</h1>
+  <h1>주문 내역</h1>
   <div id="orders-container"></div>
 </body>
 </html>
