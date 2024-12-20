@@ -76,10 +76,15 @@
 
     // 주문 내역을 확인하는 함수
     function confirmOrder() {
-      const orderList = document.querySelectorAll('.menu-item input:checked');
+      const orderList = document.querySelectorAll('.menu-item');
       let orderSummary = '';
       orderList.forEach(item => {
-        orderSummary += `${item.value} - ${item.dataset.count}잔\n`;
+        const menu = item.querySelector('select[name="menu"]').value;
+        const hotIce = item.querySelector('select[name="hotIce"]').value;
+        const options = item.querySelector('select[name="options"]').value;
+        const count = item.querySelector('input[name="count"]').value;
+        
+        orderSummary += `${menu} (${hotIce}) - 옵션: ${options} - ${count}잔\n`;
       });
       const pickupTime = document.getElementById('pickup-time').value;
       const confirmation = confirm(`주문 내역을 확인해주세요:\n\n${orderSummary}\n픽업 시간: ${pickupTime}\n\n이대로 주문하시겠습니까?`);
@@ -96,14 +101,52 @@
       const newMenuItem = document.createElement('div');
       newMenuItem.classList.add('menu-item');
       newMenuItem.innerHTML = `
-        <label>메뉴 / 개수 / 옵션</label>
-        <input type="checkbox" name="menu-item" value="메뉴 예시" data-count="1"> 메뉴 예시
-        <input type="number" name="quantity" value="1" min="1" style="width: 80px;">
-        <select>
-          <option value="옵션1">옵션1</option>
-          <option value="옵션2">옵션2</option>
-          <option value="옵션3">옵션3</option>
+        <label>메뉴</label>
+        <select name="menu">
+          <option value="에스프레소">에스프레소</option>
+          <option value="아메리카노">아메리카노</option>
+          <option value="바닐라아메리카노">바닐라아메리카노</option>
+          <option value="헤이즐넛아메리카노">헤이즐넛아메리카노</option>
+          <option value="시크릿라떼">시크릿라떼</option>
+          <option value="시크릿바닐라라떼">시크릿바닐라라떼</option>
+          <option value="시크릿라떼슈페너">시크릿라떼슈페너</option>
+          <option value="카페라떼">카페라떼</option>
+          <option value="카푸치노">카푸치노</option>
+          <option value="카라멜마끼아또">카라멜마끼아또</option>
+          <option value="카페모카">카페모카</option>
+          <option value="오트카페라떼">오트카페라떼</option>
+          <option value="연유라떼">연유라떼</option>
+          <option value="아포카토">아포카토</option>
+          <option value="바닐라라떼">바닐라라떼</option>
         </select>
+
+        <label>핫/아이스</label>
+        <select name="hotIce">
+          <option value="핫">핫</option>
+          <option value="아이스">아이스</option>
+        </select>
+
+        <label>옵션</label>
+        <select name="options">
+          <option value="디카페인 변경 (+1,000)">디카페인 변경 (+1,000)</option>
+          <option value="오트우유 변경 (+500)">오트우유 변경 (+500)</option>
+          <option value="덜 달게">덜 달게</option>
+          <option value="시럽 제거">시럽 제거</option>
+          <option value="물 절반 (진하게)">물 절반 (진하게)</option>
+          <option value="샷 절반 (연하게)">샷 절반 (연하게)</option>
+          <option value="버블 추가">버블 추가</option>
+          <option value="샷 추가 (반샷)">샷 추가 (반샷)</option>
+          <option value="더블샷 추가 (원샷)">더블샷 추가 (원샷)</option>
+          <option value="휘핑 x">휘핑 x</option>
+          <option value="휘핑 o">휘핑 o</option>
+          <option value="아주 뜨겁게">아주 뜨겁게</option>
+          <option value="미적지근하게">미적지근하게</option>
+        </select>
+
+        <label>개수</label>
+        <input type="number" name="count" value="1" min="1" />
+
+        <br>
       `;
       menuContainer.appendChild(newMenuItem);
     }
@@ -111,29 +154,45 @@
 </head>
 <body>
   <h1>2001아울렛 분당점 직원 전용 더카페 선주문 페이지</h1>
-
-  <!-- 메뉴판 이미지 -->
-  <img src="menu.jpg" alt="메뉴판">
-
-  <!-- 주문 폼 -->
+  <img src="logo.png" alt="Logo">
   <div class="form-container">
-    <!-- 주문자 정보 -->
-    <label for="name">주문자 성함</label>
-    <input type="text" id="name" placeholder="성함을 입력하세요">
+    <label for="name">이름</label>
+    <input type="text" id="name" placeholder="이름을 입력하세요">
 
-    <label for="department">소속</label>
-    <input type="text" id="department" placeholder="소속을 입력하세요">
+    <label for="pickup-time">픽업 시간</label>
+    <input type="time" id="pickup-time">
 
-    <!-- 메뉴 선택 및 개수 -->
     <div id="menu-container">
-      <!-- 메뉴 리스트 -->
       <div class="menu-item">
-        <label>메뉴: 에스프레소</label>
-        <input type="checkbox" name="menu-item" value="에스프레소" data-count="1">
-        <input type="number" name="quantity" value="1" min="1" style="width: 80px;">
-        <select>
-          <option value="디카페인 변경 +1,000">디카페인 변경 +1,000</option>
-          <option value="오트우유 변경 +500">오트우유 변경 +500</option>
+        <label>메뉴</label>
+        <select name="menu">
+          <option value="에스프레소">에스프레소</option>
+          <option value="아메리카노">아메리카노</option>
+          <option value="바닐라아메리카노">바닐라아메리카노</option>
+          <option value="헤이즐넛아메리카노">헤이즐넛아메리카노</option>
+          <option value="시크릿라떼">시크릿라떼</option>
+          <option value="시크릿바닐라라떼">시크릿바닐라라떼</option>
+          <option value="시크릿라떼슈페너">시크릿라떼슈페너</option>
+          <option value="카페라떼">카페라떼</option>
+          <option value="카푸치노">카푸치노</option>
+          <option value="카라멜마끼아또">카라멜마끼아또</option>
+          <option value="카페모카">카페모카</option>
+          <option value="오트카페라떼">오트카페라떼</option>
+          <option value="연유라떼">연유라떼</option>
+          <option value="아포카토">아포카토</option>
+          <option value="바닐라라떼">바닐라라떼</option>
+        </select>
+
+        <label>핫/아이스</label>
+        <select name="hotIce">
+          <option value="핫">핫</option>
+          <option value="아이스">아이스</option>
+        </select>
+
+        <label>옵션</label>
+        <select name="options">
+          <option value="디카페인 변경 (+1,000)">디카페인 변경 (+1,000)</option>
+          <option value="오트우유 변경 (+500)">오트우유 변경 (+500)</option>
           <option value="덜 달게">덜 달게</option>
           <option value="시럽 제거">시럽 제거</option>
           <option value="물 절반 (진하게)">물 절반 (진하게)</option>
@@ -146,45 +205,16 @@
           <option value="아주 뜨겁게">아주 뜨겁게</option>
           <option value="미적지근하게">미적지근하게</option>
         </select>
+
+        <label>개수</label>
+        <input type="number" name="count" value="1" min="1" />
       </div>
-
-      <div class="menu-item">
-        <label>메뉴: 아메리카노</label>
-        <input type="checkbox" name="menu-item" value="아메리카노" data-count="1">
-        <input type="number" name="quantity" value="1" min="1" style="width: 80px;">
-        <select>
-          <option value="디카페인 변경 +1,000">디카페인 변경 +1,000</option>
-          <option value="오트우유 변경 +500">오트우유 변경 +500</option>
-          <option value="덜 달게">덜 달게</option>
-          <option value="시럽 제거">시럽 제거</option>
-          <option value="물 절반 (진하게)">물 절반 (진하게)</option>
-          <option value="샷 절반 (연하게)">샷 절반 (연하게)</option>
-          <option value="버블 추가">버블 추가</option>
-          <option value="샷 추가 (반샷)">샷 추가 (반샷)</option>
-          <option value="더블샷 추가 (원샷)">더블샷 추가 (원샷)</option>
-          <option value="휘핑 x">휘핑 x</option>
-          <option value="휘핑 o">휘핑 o</option>
-          <option value="아주 뜨겁게">아주 뜨겁게</option>
-          <option value="미적지근하게">미적지근하게</option>
-        </select>
-      </div>
-
-      <!-- 다른 메뉴 항목들에도 비슷한 형식으로 추가할 수 있습니다. -->
-
     </div>
 
-    <!-- 메뉴 추가 버튼 -->
-    <button type="button" onclick="addMenuItem()">메뉴 추가</button>
-
-    <!-- 픽업 시간 -->
-    <label for="pickup-time">픽업 시간</label>
-    <input type="time" id="pickup-time" required>
-
-    <!-- 주문하기 버튼 -->
-    <button type="button" onclick="confirmOrder()">주문하기</button>
-
-    <!-- 관리자 페이지로 이동하는 버튼 -->
-    <button type="button" onclick="checkPassword()">관리자 페이지로 이동</button>
+    <div class="button-container">
+      <button type="button" onclick="addMenuItem()">메뉴 항목 추가</button>
+      <button type="button" onclick="confirmOrder()">주문 확인</button>
+    </div>
   </div>
 </body>
 </html>
