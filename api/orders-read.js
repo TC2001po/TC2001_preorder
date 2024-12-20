@@ -1,25 +1,24 @@
-import fs from 'fs';
-import path from 'path';
+import { createClient } from '@supabase/supabase-js';
 
-const ordersFilePath = path.join(process.cwd(), 'orders.json');
+// Supabase 클라이언트 초기화
+const supabase = createClient('https://rcxnigdyufxbrvockynp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjeG5pZ2R5dWZ4YnJ2b2NreW5wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ3MjM5MzUsImV4cCI6MjA1MDI5OTkzNX0.MMYdhlUjr6OcG5CeOKqpjNm8S2hqNMmTvFOEzKhUo5Q');
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      const data = fs.readFileSync(ordersFilePath, 'utf-8');
-      
-      // 파일 읽기 성공 후 데이터 확인
-      console.log('파일에서 읽은 데이터:', data);
+      // Supabase에서 모든 주문 내역 가져오기
+      const { data, error } = await supabase
+        .from('orders')
+        .select('*')
+        .order('id', { ascending: false }); // 최신 주문 순으로 정렬
 
-      const orders = JSON.parse(data || '[]');
-      
-      // 주문 내역이 잘 반환되는지 확인하기 위한 로그 추가
-      console.log('파싱된 주문 내역:', orders);
-      
-      res.status(200).json({ orders });
+      if (error) {
+        throw error;
+      }
+
+      res.status(200).json({ orders: data });
     } catch (error) {
-      // 파일 읽기 또는 JSON 파싱 오류가 발생할 경우
-      console.error('파일 읽기 또는 JSON 파싱 오류:', error);
+      console.error('주문 내역을 불러오는 중 오류 발생:', error);
       res.status(500).json({ message: '주문 내역을 불러오는 중 오류가 발생했습니다.' });
     }
   } else {

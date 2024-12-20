@@ -19,10 +19,10 @@
           data.orders.forEach(order => {
             const orderElement = document.createElement('div');
             orderElement.innerHTML = `
-              <p><strong>메뉴:</strong> ${order.menu}, <strong>온도:</strong> ${order.hotIce}, <strong>수량:</strong> ${order.count}잔</p>
-              <p><strong>옵션:</strong> ${order.options}</p>
-              <p><strong>이름:</strong> ${order.customerName}, <strong>소속:</strong> ${order.customerAffiliation}</p>
-              <p><strong>픽업 시간:</strong> ${order.pickupTime}</p>
+              <p>메뉴: ${order.menu}, 온도: ${order.hotIce}, 수량: ${order.count}잔</p>
+              <p>옵션: ${order.options}</p>
+              <p>이름: ${order.customerName}, 소속: ${order.customerAffiliation}</p>
+              <p>픽업 시간: ${order.pickupTime}</p>
               <hr />
             `;
             ordersContainer.appendChild(orderElement);
