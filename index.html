@@ -117,7 +117,7 @@
     if (menu && hotIce && count) {
       const menuValue = menu.value.trim() !== '' ? menu.value : '기타';  // 메뉴 값이 비어있으면 '기타'
       orders.push({
-        menu: menuValue,
+        menu: menuValue,  // menu에 빈값이 들어가지 않도록 기본값 설정
         hotIce: hotIce.value,
         options: checkedOptions.join(', '),
         count: count.value,
@@ -160,7 +160,6 @@
     alert("주문이 취소되었습니다.");
   }
 }
-
 
 
 
