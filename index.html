@@ -43,23 +43,28 @@
             const isConfirmed = confirm(confirmationMessage);
 
             if (isConfirmed) {
-                // 주문 내역을 로컬 저장소에 저장
+                // 서버로 주문 내역 전송
                 const order = {
                     name: name,
                     menu: menu,
                     pickupTime: pickupTime
                 };
 
-                // 로컬 저장소에서 기존 주문 정보 가져오기
-                let orders = JSON.parse(localStorage.getItem('orders')) || [];
-
-                // 새로운 주문 추가
-                orders.push(order);
-
-                // 로컬 저장소에 새로운 주문 저장
-                localStorage.setItem('orders', JSON.stringify(orders));
-
-                alert('주문 정보가 저장되었습니다!');
+                fetch('http://localhost:3000/order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(order)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('주문 정보가 서버에 저장되었습니다!');
+                })
+                .catch(error => {
+                    alert('주문 저장에 실패했습니다.');
+                    console.error(error);
+                });
             } else {
                 alert('주문이 취소되었습니다. 다시 입력해주세요.');
             }
