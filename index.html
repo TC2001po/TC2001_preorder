@@ -90,8 +90,18 @@
     function confirmOrder() {
   const orderList = document.querySelectorAll('.menu-item');
   let orderSummary = '';
-  
   const orders = [];
+
+  // form-container에서 이름과 소속 값을 가져옴
+  const customerName = document.querySelector('#CustomerN').value;
+  const customerAffiliation = document.querySelector('#CustomerI').value;
+
+  // customerName과 customerAffiliation 값이 비어있는지 확인
+  if (!customerName || !customerAffiliation) {
+    alert("주문자 이름과 소속을 입력해주세요.");
+    return;
+  }
+
   orderList.forEach(item => {
     const menu = item.querySelector('select[name="menu"]');
     const hotIce = item.querySelector('select[name="hotIce"]');
@@ -103,31 +113,23 @@
       checkedOptions.push(option.value);
     });
 
-    const customerName = document.querySelector('#CustomerN').value;
-  const customerAffiliation = document.querySelector('#CustomerI').value;
-
-    if (menu && hotIce && count && customerName && customerAffiliation) {
+    if (menu && hotIce && count) {
       orders.push({
         menu: menu.value,
         hotIce: hotIce.value,
         options: checkedOptions.join(', '),
         count: count.value,
-        customerName: customerName,  // 이름을 함께 저장
-        customerAffiliation: customerAffiliation  // 소속을 함께 저장
+        customerName: customerName,  // form-container에서 가져온 이름
+        customerAffiliation: customerAffiliation  // form-container에서 가져온 소속
       });
       orderSummary += `${menu.value} (${hotIce.value}) - 옵션: ${checkedOptions.join(', ')} - ${count.value}잔 - 이름: ${customerName} - 소속: ${customerAffiliation}\n`;
     }
   });
-  
+
   const pickupTime = document.getElementById('pickup-time').value;
 
   if (!orderSummary) {
     alert("주문할 항목이 없습니다. 메뉴를 선택해주세요.");
-    return;
-  }
-  
-  if (!customerName || !customerAffiliation) {
-    alert("주문자 이름과 소속을 입력해주세요.");
     return;
   }
 
