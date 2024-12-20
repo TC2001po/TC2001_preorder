@@ -103,7 +103,7 @@
   }
 
   orderList.forEach(item => {
-    const menu = item.querySelector('input[name="menu"]');  // <input>으로 변경된 메뉴 필드
+    const menu = item.querySelector('input[name="menu"]');  // <input>으로 수정된 메뉴 필드
     const hotIce = item.querySelector('select[name="hotIce"]');
     const count = item.querySelector('input[name="count"]');
 
@@ -115,15 +115,22 @@
 
     // menu, hotIce, count가 모두 존재하는지 체크
     if (menu && hotIce && count) {
-      const menuValue = menu.value.trim() !== '' ? menu.value : '기타';  // 메뉴 값이 비어있으면 '기타'
+      // menu 값이 제대로 입력되었는지 확인
+      const menuValue = menu.value.trim();  // 사용자가 입력한 텍스트 그대로
+      if (!menuValue) {
+        alert("메뉴를 입력해주세요.");
+        return;
+      }
+      
       orders.push({
-        menu: menuValue,  // menu에 빈값이 들어가지 않도록 기본값 설정
+        menu: menuValue,  // 사용자가 입력한 메뉴 값을 그대로 전달
         hotIce: hotIce.value,
         options: checkedOptions.join(', '),
         count: count.value,
         customerName: customerName,  
         customerAffiliation: customerAffiliation  
       });
+      
       orderSummary += `${menuValue} (${hotIce.value}) - 옵션: ${checkedOptions.join(', ')} - ${count.value}잔 - 이름: ${customerName} - 소속: ${customerAffiliation}\n`;
     }
   });
@@ -160,6 +167,7 @@
     alert("주문이 취소되었습니다.");
   }
 }
+
 
 
 
