@@ -6,9 +6,11 @@ const { createClient } = require('@supabase/supabase-js');
 
 
 // Supabase URL과 키를 환경 변수로 설정
-const supabaseUrl = process.https://emrjszlukuetqjncslqs.supabase.co;
-const supabaseKey = process.env.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtcmpzemx1a3VldHFqbmNzbHFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ3MjUwNzQsImV4cCI6MjA1MDMwMTA3NH0.U-K6nR6pIZeOAlZjlLhOt_iE8WOAx9Nbi2SkpSyMRvM;
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+
 const supabase = createClient(supabaseUrl, supabaseKey);
+
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
