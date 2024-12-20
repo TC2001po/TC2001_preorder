@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>주문 내역</title>
+  <title>관리자 주문 내역</title>
   <script>
     // 페이지 로드 시 주문 내역을 실시간으로 가져오는 함수
     async function loadOrders() {
@@ -19,10 +19,10 @@
           data.orders.forEach(order => {
             const orderElement = document.createElement('div');
             orderElement.innerHTML = `
-              <p>메뉴: ${order.menu}, 온도: ${order.hotIce}, 수량: ${order.count}잔</p>
-              <p>옵션: ${order.options}</p>
-              <p>이름: ${order.customerName}, 소속: ${order.customerAffiliation}</p>
-              <p>픽업 시간: ${order.pickupTime}</p>
+              <p><strong>메뉴:</strong> ${order.menu}, <strong>온도:</strong> ${order.hotIce}, <strong>수량:</strong> ${order.count}잔</p>
+              <p><strong>옵션:</strong> ${order.options}</p>
+              <p><strong>이름:</strong> ${order.customerName}, <strong>소속:</strong> ${order.customerAffiliation}</p>
+              <p><strong>픽업 시간:</strong> ${order.pickupTime}</p>
               <hr />
             `;
             ordersContainer.appendChild(orderElement);
@@ -38,7 +38,7 @@
   </script>
 </head>
 <body>
-  <h1>주문 내역</h1>
+  <h1>관리자 주문 내역</h1>
   <div id="orders-container"></div>
 </body>
 </html>
