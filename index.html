@@ -103,7 +103,7 @@
   }
 
   orderList.forEach(item => {
-    const menu = document.getElementById("menu").value;
+    const menu = item.querySelector('select[name="menu"]');
     const hotIce = item.querySelector('select[name="hotIce"]');
     const count = item.querySelector('input[name="count"]');
     
@@ -157,97 +157,21 @@
 
 
     // 메뉴 항목 추가 기능
-    function addMenuItem() {
-      const menuContainer = document.getElementById('menu-container');
-      const newMenuItem = document.createElement('div');
-      newMenuItem.classList.add('menu-item');
-      newMenuItem.innerHTML = `
-        <label>메뉴</label>
-        <select id="menu" name="menu">
-          <option value="">메뉴를 선택하세요</option>
-          <option value="에스프레소">에스프레소</option>
-          <option value="아메리카노">아메리카노</option>
-          <option value="바닐라아메리카노">바닐라아메리카노</option>
-          <option value="헤이즐넛아메리카노">헤이즐넛아메리카노</option>
-          <option value="시크릿라떼">시크릿라떼</option>
-          <option value="시크릿바닐라라떼">시크릿바닐라라떼</option>
-          <option value="시크릿라떼슈페너">시크릿라떼슈페너</option>
-          <option value="카페라떼">카페라떼</option>
-          <option value="카푸치노">카푸치노</option>
-          <option value="카라멜마끼아또">카라멜마끼아또</option>
-          <option value="카페모카">카페모카</option>
-          <option value="오트카페라떼">오트카페라떼</option>
-          <option value="연유라떼">연유라떼</option>
-          <option value="아포카토">아포카토</option>
-          <option value="바닐라라떼">바닐라라떼</option>
-          <option value="헤이즐넛라떼">헤이즐넛라떼</option>
-          <option value="흑임자카페라떼">흑임자카페라떼</option>
-          <option value="복숭아아이스티">복숭아아이스티</option>
-          <option value="제로복숭아아이스티">제로복숭아아이스티</option>
-          <option value="제로바닐라라떼">제로바닐라라떼</option>
-          <option value="시크릿딸기라떼">시크릿딸기라떼</option>
-          <option value="오곡미숫라떼">오곡미숫라떼</option>
-          <option value="초코라떼">초코라떼</option>
-          <option value="그린티라떼">그린티라떼</option>
-          <option value="밀크티라떼">밀크티라떼</option>
-          <option value="레몬차">레몬차</option>
-          <option value="자몽차">자몽차</option>
-          <option value="유자차">유자차</option>
-          <option value="자몽허니블랙티">자몽허니블랙티</option>
-          <option value="자몽머스캣티">자몽머스캣티</option>
-          <option value="제주청귤한라봉티">제주청귤한라봉티</option>
-          <option value="오미자유자티">오미자유자티</option>
-          <option value="레몬에이드">레몬에이드</option>
-          <option value="자몽에이드">자몽에이드</option>
-          <option value="유자에이드">유자에이드</option>
-          <option value="오곡퐁쉐이크">오곡퐁쉐이크</option>
-          <option value="초코퐁쉐이크">초코퐁쉐이크</option>
-          <option value="딸기퐁쉐이크">딸기퐁쉐이크</option>
-          <option value="오레오퐁쉐이크">오레오퐁쉐이크</option>
-          <option value="밀크쉐이크">밀크쉐이크</option>
-          <option value="초코밀크쉐이크">초코밀크쉐이크</option>
-          <option value="딸기밀크쉐이크">딸기밀크쉐이크</option>
-          <option value="오레오밀크쉐이크">오레오밀크쉐이크</option>
-          <option value="바닐라에스프레소프레스치노">바닐라에스프레소프레스치노</option>
-          <option value="자바칩프레스치노">자바칩프레스치노</option>
-          <option value="그린티프레스치노">그린티프레스치노</option>
-          <option value="콜드브루 블랙">콜드브루 블랙</option>
-          <option value="콜드브루 라떼">콜드브루 라떼</option>
-          <option value="콜드브루 연유라떼">콜드브루 연유라떼</option>
-          <option value="콜드브루 시크릿라떼">콜드브루 시크릿라떼</option>
-          <option value="콜드브루 아인슈페너">콜드브루 아인슈페너</option>
-          <option value="플레인요거트스무디">플레인요거트스무디</option>
-          <option value="딸기요거트스무디">딸기요거트스무디</option>
-          <option value="블루베리요거트스무디">블루베리요거트스무디</option>
-          <option value="더블망고스무디">더블망고스무디</option>
-          <option value="딸기스무디">딸기스무디</option>
-          <option value="청포도스무디">청포도스무디</option>
-          <option value="유자스무디">유자스무디</option>
-          <option value="딸기주스">딸기주스</option>
-          <option value="망고주스">망고주스</option>
-          <option value="키위주스">키위주스</option>
-          <option value="딸기바나나주스">딸기바나나주스</option>
-          <option value="망고바나나주스">망고바나나주스</option>
-          <option value="딸기밀크티라떼">딸기밀크티라떼</option>
-          <option value="버블타로라떼">버블타로라떼</option>
-          <option value="잉글리시브렉퍼스트">잉글리시브렉퍼스트</option>
-          <option value="얼그레이">얼그레이</option>
-          <option value="자스민">자스민</option>
-          <option value="작설 (녹차)">작설 (녹차)</option>
-          <option value="캐모마일">캐모마일</option>
-          <option value="페퍼민트">페퍼민트</option>
-          <option value="루이보스">루이보스</option>
-          <option value="히비스커스">히비스커스</option>
-          
-        </select>
+function addMenuItem() {
+  const menuContainer = document.getElementById('menu-container');
+  const newMenuItem = document.createElement('div');
+  newMenuItem.classList.add('menu-item');
+  newMenuItem.innerHTML = `
+    <label>메뉴</label>
+    <input type="text" name="menu" placeholder="메뉴를 입력하세요" />
 
-        <label>핫/아이스</label>
-        <select name="hotIce">
-          <option value="핫">핫</option>
-          <option value="아이스">아이스</option>
-        </select>
+    <label>핫/아이스</label>
+    <select name="hotIce">
+      <option value="핫">핫</option>
+      <option value="아이스">아이스</option>
+    </select>
 
-        <label>옵션</label>
+    <label>옵션</label>
     <div class="options">
       <label><input type="checkbox" name="options_zr" value="없음"> 없음</label>
       <label><input type="checkbox" name="options_dc" value="디카페인 변경 (+1,000)"> 디카페인 변경 (+1,000)</label>
@@ -265,13 +189,14 @@
       <label><input type="checkbox" name="options_lh" value="미적지근하게"> 미적지근하게</label>
     </div>
 
-        <label>개수</label>
-        <input type="number" name="count" value="1" min="1" />
+    <label>개수</label>
+    <input type="number" name="count" value="1" min="1" />
 
-        <br>
-      `;
-      menuContainer.appendChild(newMenuItem);
-    }
+    <br>
+  `;
+  menuContainer.appendChild(newMenuItem);
+}
+
   </script>
 </head>
 <body>
@@ -294,91 +219,15 @@
     <div id="menu-container">
       <div class="menu-item">
         <label>메뉴</label>
-        <select id="menu" name="menu">
-            <option value="">메뉴를 선택하세요</option>
-            <option value="에스프레소">에스프레소</option>
-            <option value="아메리카노">아메리카노</option>
-            <option value="바닐라아메리카노">바닐라아메리카노</option>
-            <option value="헤이즐넛아메리카노">헤이즐넛아메리카노</option>
-            <option value="시크릿라떼">시크릿라떼</option>
-            <option value="시크릿바닐라라떼">시크릿바닐라라떼</option>
-            <option value="시크릿라떼슈페너">시크릿라떼슈페너</option>
-            <option value="카페라떼">카페라떼</option>
-            <option value="카푸치노">카푸치노</option>
-            <option value="카라멜마끼아또">카라멜마끼아또</option>
-            <option value="카페모카">카페모카</option>
-            <option value="오트카페라떼">오트카페라떼</option>
-            <option value="연유라떼">연유라떼</option>
-            <option value="아포카토">아포카토</option>
-            <option value="바닐라라떼">바닐라라떼</option>
-            <option value="바닐라라떼">바닐라라떼</option>
-            <option value="헤이즐넛라떼">헤이즐넛라떼</option>
-            <option value="흑임자카페라떼">흑임자카페라떼</option>
-            <option value="복숭아아이스티">복숭아아이스티</option>
-            <option value="제로복숭아아이스티">제로복숭아아이스티</option>
-            <option value="제로바닐라라떼">제로바닐라라떼</option>
-            <option value="시크릿딸기라떼">시크릿딸기라떼</option>
-            <option value="오곡미숫라떼">오곡미숫라떼</option>
-            <option value="초코라떼">초코라떼</option>
-            <option value="그린티라떼">그린티라떼</option>
-            <option value="밀크티라떼">밀크티라떼</option>
-            <option value="레몬차">레몬차</option>
-            <option value="자몽차">자몽차</option>
-            <option value="유자차">유자차</option>
-            <option value="자몽허니블랙티">자몽허니블랙티</option>
-            <option value="자몽머스캣티">자몽머스캣티</option>
-            <option value="제주청귤한라봉티">제주청귤한라봉티</option>
-            <option value="오미자유자티">오미자유자티</option>
-            <option value="레몬에이드">레몬에이드</option>
-            <option value="자몽에이드">자몽에이드</option>
-            <option value="유자에이드">유자에이드</option>
-            <option value="오곡퐁쉐이크">오곡퐁쉐이크</option>
-            <option value="초코퐁쉐이크">초코퐁쉐이크</option>
-            <option value="딸기퐁쉐이크">딸기퐁쉐이크</option>
-            <option value="오레오퐁쉐이크">오레오퐁쉐이크</option>
-            <option value="밀크쉐이크">밀크쉐이크</option>
-            <option value="초코밀크쉐이크">초코밀크쉐이크</option>
-            <option value="딸기밀크쉐이크">딸기밀크쉐이크</option>
-            <option value="오레오밀크쉐이크">오레오밀크쉐이크</option>
-            <option value="바닐라에스프레소프레스치노">바닐라에스프레소프레스치노</option>
-            <option value="자바칩프레스치노">자바칩프레스치노</option>
-            <option value="그린티프레스치노">그린티프레스치노</option>
-            <option value="콜드브루 블랙">콜드브루 블랙</option>
-            <option value="콜드브루 라떼">콜드브루 라떼</option>
-            <option value="콜드브루 연유라떼">콜드브루 연유라떼</option>
-            <option value="콜드브루 시크릿라떼">콜드브루 시크릿라떼</option>
-            <option value="콜드브루 아인슈페너">콜드브루 아인슈페너</option>
-            <option value="플레인요거트스무디">플레인요거트스무디</option>
-            <option value="딸기요거트스무디">딸기요거트스무디</option>
-            <option value="블루베리요거트스무디">블루베리요거트스무디</option>
-            <option value="더블망고스무디">더블망고스무디</option>
-            <option value="딸기스무디">딸기스무디</option>
-            <option value="청포도스무디">청포도스무디</option>
-            <option value="유자스무디">유자스무디</option>
-            <option value="딸기주스">딸기주스</option>
-            <option value="망고주스">망고주스</option>
-            <option value="키위주스">키위주스</option>
-            <option value="딸기바나나주스">딸기바나나주스</option>
-            <option value="망고바나나주스">망고바나나주스</option>
-            <option value="딸기밀크티라떼">딸기밀크티라떼</option>
-            <option value="버블타로라떼">버블타로라떼</option>
-            <option value="잉글리시브렉퍼스트">잉글리시브렉퍼스트</option>
-            <option value="얼그레이">얼그레이</option>
-            <option value="자스민">자스민</option>
-            <option value="작설 (녹차)">작설 (녹차)</option>
-            <option value="캐모마일">캐모마일</option>
-            <option value="페퍼민트">페퍼민트</option>
-            <option value="루이보스">루이보스</option>
-            <option value="히비스커스">히비스커스</option>
-        </select>
+    <input type="text" name="menu" placeholder="메뉴를 입력하세요" />
 
-        <label>핫/아이스</label>
-        <select name="hotIce">
-          <option value="핫">핫</option>
-          <option value="아이스">아이스</option>
-        </select>
+    <label>핫/아이스</label>
+    <select name="hotIce">
+      <option value="핫">핫</option>
+      <option value="아이스">아이스</option>
+    </select>
 
-        <label>옵션</label>
+    <label>옵션</label>
     <div class="options">
       <label><input type="checkbox" name="options_zr" value="없음"> 없음</label>
       <label><input type="checkbox" name="options_dc" value="디카페인 변경 (+1,000)"> 디카페인 변경 (+1,000)</label>
@@ -396,8 +245,8 @@
       <label><input type="checkbox" name="options_lh" value="미적지근하게"> 미적지근하게</label>
     </div>
 
-        <label>개수</label>
-        <input type="number" name="count" value="1" min="1">
+    <label>개수</label>
+    <input type="number" name="count" value="1" min="1" />
       </div>
     </div>
 
