@@ -4,27 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문 내역</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> <!-- 구글 차트 로딩 -->
 </head>
 <body>
     <h1>주문 내역</h1>
-    <ul id="orderList">
+    <table id="orderList">
         <!-- 주문 내역을 여기 표시 -->
-    </ul>
+    </table>
 
-    <script>
-        // 예시로 주문 내역을 하드코딩 (실제로는 서버나 데이터베이스에서 받아올 것)
-        const orders = [
-            { id: 1, name: "김철수", item: "아메리카노", time: "12:30" },
-            { id: 2, name: "이영희", item: "라떼", time: "12:35" },
-            { id: 3, name: "박민수", item: "티라미수 라떼", time: "12:40" }
-        ];
+    <script type="text/javascript">
+        // 구글 차트 로드
+        google.charts.load('current', {
+            packages: ['corechart', 'table']
+        });
 
-        const orderList = document.getElementById("orderList");
+        // 스프레드시트 ID와 범위 설정
+        const spreadsheetId = 'y15SjKcG0Sa3LwEOwj4R-s9JXuSsLcf1XpMAtMrHOLbDI'; // 구글 스프레드시트 ID
+        const range = '더카페 2001아울렛 선주문 내역'; // 시트 이름 (예: Sheet1)
 
-        orders.forEach(order => {
-            const listItem = document.createElement("li");
-            listItem.textContent = `${order.name}님: ${order.item} (${order.time})`;
-            orderList.appendChild(listItem);
+        // 스프레드시트 데이터를 불러오는 함수
+        google.charts.setOnLoadCallback(function() {
+            const query = new google.visualization.Query(
+                `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&range=${range}`
+            );
+
+            query.send(function(response) {
+                const data = response.getDataTable();
+                const table = document.getElementById('orderList');
+                
+                // 주문 내역 테이블 생성
+                const headerRow = document.createElement('tr');
+                for (let i = 0; i < data.getNumberOfColumns(); i++) {
+                    const headerCell = document.createElement('th');
+                    headerCell.textContent = data.getColumnLabel(i);
+                    headerRow.appendChild(headerCell);
+                }
+                table.appendChild(headerRow);
+
+                // 데이터 행 추가
+                for (let i = 0; i < data.getNumberOfRows(); i++) {
+                    const row = document.createElement('tr');
+                    for (let j = 0; j < data.getNumberOfColumns(); j++) {
+                        const cell = document.createElement('td');
+                        cell.textContent = data.getValue(i, j);
+                        row.appendChild(cell);
+                    }
+                    table.appendChild(row);
+                }
+            });
         });
     </script>
 </body>
