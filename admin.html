@@ -1,46 +1,113 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>주문 내역 - 관리자</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>주문 내역</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .order-list {
+      margin-top: 20px;
+    }
+    .alert {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <h1>주문 내역</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>메뉴</th>
-                <th>옵션</th>
-                <th>수량</th>
-                <th>픽업 시간</th>
-            </tr>
-        </thead>
-        <tbody id="order-list">
-            <!-- 주문 내역이 여기에 표시됩니다. -->
-        </tbody>
-    </table>
+  <h1>주문 내역</h1>
 
-    <script>
-        // 서버에서 주문 내역을 가져와서 표시
-        fetch('/api/orders')
-            .then(response => response.json())
-            .then(orders => {
-                const orderList = document.getElementById('order-list');
-                orders.forEach(order => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${order.menu}</td>
-                        <td>${order.options}</td>
-                        <td>${order.count}</td>
-                        <td>${order.pickupTime}</td>
-                    `;
-                    orderList.appendChild(row);
-                });
-            })
-            .catch(error => {
-                console.error('주문 내역을 가져오는 중 오류 발생:', error);
+  <!-- 주문 내역을 표시할 테이블 -->
+  <table>
+    <thead>
+      <tr>
+        <th>주문자 이름</th>
+        <th>소속</th>
+        <th>주문 내역</th>
+        <th>픽업 시간</th>
+        <th>주문 시간</th>
+      </tr>
+    </thead>
+    <tbody id="order-list">
+      <!-- 주문 내역은 여기에서 동적으로 삽입됩니다. -->
+    </tbody>
+  </table>
+
+  <button id="refresh-button">새로고침</button>
+
+  <audio id="notification-sound" src="alert-sound.mp3" preload="auto"></audio>
+
+  <script>
+    let lastOrderCount = 0;  // 마지막으로 불러온 주문의 수
+    let previousOrders = []; // 이전 주문 내역을 저장하는 배열
+
+    // 새로고침 버튼 클릭 시 주문 내역을 다시 불러옵니다.
+    document.getElementById('refresh-button').addEventListener('click', loadOrders);
+
+    // 주문 내역을 불러오는 함수
+    function loadOrders() {
+      fetch('/api/orders')
+        .then(response => response.json())
+        .then(data => {
+          const orderList = document.getElementById('order-list');
+          orderList.innerHTML = '';  // 기존 내용을 지웁니다.
+
+          if (data.length === 0) {
+            const alertMessage = document.createElement('tr');
+            alertMessage.innerHTML = '<td colspan="5" class="alert">현재 주문 내역이 없습니다.</td>';
+            orderList.appendChild(alertMessage);
+          } else {
+            // 새로운 주문이 있는지 확인 후 알림음 재생
+            if (data.length > lastOrderCount) {
+              playNotificationSound();
+            }
+
+            // 각 주문을 테이블에 표시
+            data.forEach(order => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                <td>${order.customerName}</td>
+                <td>${order.customerAffiliation}</td>
+                <td>${order.orders.map(item => `${item.menu} (${item.hotIce}) - 옵션: ${item.options} - ${item.count}잔`).join('<br>')}</td>
+                <td>${order.pickupTime}</td>
+                <td>${order.orderTime}</td>
+              `;
+              orderList.appendChild(row);
             });
-    </script>
+
+            // 주문 내역이 변경되었으면 새로 고침
+            previousOrders = data;
+            lastOrderCount = data.length;
+          }
+        })
+        .catch(error => {
+          console.error('주문 정보를 불러오는 중 오류가 발생했습니다.', error);
+        });
+    }
+
+    // 페이지 로드 시 바로 주문 내역을 불러옵니다.
+    window.onload = loadOrders;
+
+    // 알림음을 재생하는 함수
+    function playNotificationSound() {
+      const sound = document.getElementById('notification-sound');
+      sound.play();
+    }
+
+    // 10초마다 자동으로 주문 내역을 새로 고침
+    setInterval(loadOrders, 10000);  // 10000ms = 10초마다 호출
+  </script>
 </body>
 </html>
